@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -47,7 +48,7 @@ class NewUserActivity : AppCompatActivity() {
                     return
                 }
 
-                // 이름
+                // 유저이름
                 sql = "SELECT name FROM "+ DatabaseOpenHelper.tableName + " WHERE id = '" + id + "'"    // name 열에서 id 검색
                 cursor = database.rawQuery(sql, null)
                 if (cursor.count != 0) {

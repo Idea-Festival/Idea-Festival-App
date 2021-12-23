@@ -8,6 +8,7 @@ import com.example.fashionapplication.bottomNavigation.ClosetFragment
 import com.example.fashionapplication.bottomNavigation.MainFragment
 import com.example.fashionapplication.bottomNavigation.ProfileFragment
 import com.example.fashionapplication.bottomNavigation.SearchFragment
+import com.example.fashionapplication.function.writingPostActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_page.*
 
@@ -48,5 +49,11 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
             }
         }
         return false
+    }
+
+    fun changeToMenu() {
+        val writingPostActivity = writingPostActivity()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_screen,writingPostActivity).commit()
     }
 }

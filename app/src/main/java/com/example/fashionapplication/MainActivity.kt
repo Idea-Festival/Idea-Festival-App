@@ -10,6 +10,9 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.fashionapplication.login.DatabaseOpenHelper
 import com.example.fashionapplication.login.NewUserActivity
 import com.example.fashionapplication.login.OnClickListener

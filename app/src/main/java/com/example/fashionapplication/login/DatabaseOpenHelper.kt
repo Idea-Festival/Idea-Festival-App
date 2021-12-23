@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
+lateinit var nameUser : String  // 유저 이름을 불러옴(다른곳에서 쓰게)
 class DatabaseOpenHelper(context: Context?, name: String?, factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, name, factory, version) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -29,6 +30,8 @@ class DatabaseOpenHelper(context: Context?, name: String?, factory: SQLiteDataba
             val sql = "INSERT INTO " + tableName + "(id, pw, name, email)" +
                     "values('" + id + "', '" + pw + "', '" +name+ "', '" +email+ "')"
             Log.i("tag",sql)
+            nameUser = name
+            Log.i("tag", nameUser)
             db.execSQL(sql)
             db.setTransactionSuccessful()
         } catch (e: Exception) {

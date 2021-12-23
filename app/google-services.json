@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "390505276247",
+    "project_id": "idea-festival",
+    "storage_bucket": "idea-festival.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390505276247:android:014138e591ae0a70055412",
+        "android_client_info": {
+          "package_name": "com.example.fashionapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390505276247-sa66svcamr0q9c4t59dbl3agtnjqcbmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fashionapplication",
+            "certificate_hash": "8bdd7de2f05e51dcae3880596c0d14bceb30debc"
+          }
+        },
+        {
+          "client_id": "390505276247-kg9ildvpq6fq56frnd4d8d4kekg4d91a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhdKLQB-UXDWLT9guTlF6R77LW2fi0zks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390505276247-kg9ildvpq6fq56frnd4d8d4kekg4d91a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
