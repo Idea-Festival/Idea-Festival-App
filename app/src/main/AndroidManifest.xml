@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.fashionapplication">
     <!-- 인터넷 커미션 -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- firebase 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,20 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FashionApplication">
         <activity
+            android:name=".function.writingPostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".bottomNavigation.MainFragment"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
             android:name=".MainPageActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".login.NewUserActivity"
             android:exported="false" />
         <activity
             android:name=".login.SignupActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"

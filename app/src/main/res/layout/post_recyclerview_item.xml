@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/post_user"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/post_img"
+        app:layout_constraintBottom_toTopOf="@+id/post_main_img"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="username"
+        android:textSize="17dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_user"
+        app:layout_constraintStart_toEndOf="@+id/post_user"
+        app:layout_constraintTop_toTopOf="@+id/post_user" />
+
+    <ImageView
+        android:id="@+id/post_main_img"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/post_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_main_img" />
+
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/hanger_unselected"
+        app:layout_constraintStart_toStartOf="@+id/post_main_img"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/star_unselected"
+        app:layout_constraintBottom_toBottomOf="@+id/like"
+        app:layout_constraintStart_toEndOf="@+id/like"
+        app:layout_constraintTop_toTopOf="@+id/like" />
+
+    <ImageView
+        android:id="@+id/comment"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/comment_unselected"
+        app:layout_constraintBottom_toBottomOf="@+id/star"
+        app:layout_constraintStart_toEndOf="@+id/star"
+        app:layout_constraintTop_toTopOf="@+id/star" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/tag_unselected"
+        app:layout_constraintEnd_toEndOf="@+id/post_main_img"
+        app:layout_constraintTop_toTopOf="@+id/comment" />
+
+    <TextView
+        android:id="@+id/like_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="427323"
+        app:layout_constraintEnd_toEndOf="@+id/like"
+        app:layout_constraintStart_toStartOf="@+id/like"
+        app:layout_constraintTop_toBottomOf="@+id/like" />
+
+    <TextView
+        android:id="@+id/post_str"
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+    <TextView
+        android:id="@+id/hasi1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="#셔츠"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/post_str"
+        app:layout_constraintTop_toBottomOf="@+id/post_str" />
+
+    <TextView
+        android:id="@+id/hasi2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="#맨투맨"
+        android:layout_marginStart="15dp"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/hasi1"
+        app:layout_constraintTop_toBottomOf="@+id/post_str" />
+
+    <TextView
+        android:id="@+id/hasi3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="#꾸안꾸"
+        android:layout_marginStart="15dp"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/hasi2"
+        app:layout_constraintTop_toBottomOf="@+id/post_str" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

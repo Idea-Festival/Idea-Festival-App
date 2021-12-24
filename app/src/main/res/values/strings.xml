@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Fashion SNS</string>
-    <string name="welcome_to_">Welcome \n to Fashion SNS</string>
+    <string name="welcome_to_">Fashion SNS</string>
+    <string name="splash">Welcome \n to Fashion SNS</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

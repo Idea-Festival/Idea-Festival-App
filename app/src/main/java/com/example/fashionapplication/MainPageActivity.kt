@@ -50,10 +50,4 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         }
         return false
     }
-
-    fun changeToMenu() {
-        val writingPostActivity = writingPostActivity()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_screen,writingPostActivity).commit()
-    }
 }
