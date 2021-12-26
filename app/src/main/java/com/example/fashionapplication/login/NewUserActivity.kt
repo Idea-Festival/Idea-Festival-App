@@ -5,41 +5,40 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.fashionapplication.MainActivity
 import com.example.fashionapplication.R
+import com.example.fashionapplication.data.UserData
+import com.example.fashionapplication.databinding.ActivityNewUserBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class NewUserActivity : AppCompatActivity() {
+
     private val version: Int = 1
     private lateinit var helper: DatabaseOpenHelper
     private lateinit var database: SQLiteDatabase
     private lateinit var cursor: Cursor
     private lateinit var sql: String
+    private lateinit var binding: ActivityNewUserBinding
+//    private lateinit var firebaseDatabase: DatabaseReference
 
-    private lateinit var addUser: View
-    private lateinit var createUser: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_user)
+        binding = ActivityNewUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         helper = DatabaseOpenHelper(this, DatabaseOpenHelper.tableName, null, version)
         database = helper.writableDatabase
 
-        createUser = findViewById(R.id.create_user_btn)
-        createUser.setOnClickListener(object : OnClickListener, View.OnClickListener {
+        binding.createUserBtn.setOnClickListener(object : OnClickListener, View.OnClickListener {
             override fun onClick(v: View) {
-                val dataId: EditText = findViewById(R.id.new_id)
-                val dataEmail: EditText = findViewById(R.id.new_email)
-                val dataName: EditText = findViewById(R.id.new_name)
-                val dataPw: EditText = findViewById(R.id.new_pw)
-                val id: String = dataId.text.toString()
-                val pw: String = dataPw.text.toString()
-                val email: String = dataEmail.text.toString()
-                val name: String = dataName.text.toString()
+                val id = binding.newId.text.toString()
+                val pw = binding.newPw.text.toString()
+                val email = binding.newEmail.text.toString()
+                val name = binding.newName.text.toString()
 
                 // 입력칸이 비었을때
                 if (id.isEmpty() || email.isEmpty() || name.isEmpty() || pw.isEmpty()) {
@@ -69,16 +68,19 @@ class NewUserActivity : AppCompatActivity() {
                 if (cursor.count != 0) {
                     Toast.makeText(this@NewUserActivity, "존재하는 아이디입니다.", Toast.LENGTH_SHORT).show()
                 }else {
+//                    firebaseDatabase = FirebaseDatabase.getInstance().getReference("user")
+//                    val user = UserData(id,pw,name,email)
+//                    firebaseDatabase.child(name).push().setValue(user)
+
                     helper.insertUser(database, id, pw, name, email)
-                    Toast.makeText(this@NewUserActivity, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@NewUserActivity, MainActivity::class.java)
+                    Toast.makeText(this@NewUserActivity, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                     overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
                 }
             }
         })
-        addUser = findViewById(R.id.add_cancel_button)
-        addUser.setOnClickListener {
+        binding.addCancelButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
