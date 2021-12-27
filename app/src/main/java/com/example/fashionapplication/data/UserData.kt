@@ -1,8 +1,9 @@
 package com.example.fashionapplication.data
 
 data class UserData (
-    var id: String,
-    var pw: String,
-    var name: String,
-    var email: String
+    var uid: String? = null,
+    var id: String? = null,
+    var pw: String? = null,
+    var name: String? = null,
+    var email: String? = null
 )

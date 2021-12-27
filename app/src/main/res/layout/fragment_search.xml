@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffff00"
     tools:context=".bottomNavigation.SearchFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/search"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/search_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:ems="11"
+            android:fontFamily="@font/cafe24ssurround"
+            android:gravity="center"
+            android:hint="검색어를 입력하세요."
+            app:layout_constraintBottom_toBottomOf="@+id/search"
+            app:layout_constraintEnd_toEndOf="@+id/search"
+            app:layout_constraintStart_toStartOf="@+id/search"
+            app:layout_constraintTop_toTopOf="@+id/search" />
+
+        <ImageView
+            android:id="@+id/search_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/search_cloth"
+            app:layout_constraintBottom_toBottomOf="@+id/search"
+            app:layout_constraintEnd_toEndOf="@+id/search"
+            app:layout_constraintTop_toTopOf="@+id/search" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

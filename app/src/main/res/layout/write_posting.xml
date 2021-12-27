@@ -156,7 +156,7 @@
         app:layout_constraintTop_toTopOf="@+id/hashi3" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/comment_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -182,7 +182,7 @@
         android:background="#E5E5E5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/comment_post"
         tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView

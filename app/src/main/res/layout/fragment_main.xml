@@ -26,7 +26,6 @@
             android:fontFamily="@font/cafe24ssurround"
             android:text=" + 피드백 댓글 추가"
             android:textSize="30dp"
-            android:layout_marginBottom="?attr/actionBarSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

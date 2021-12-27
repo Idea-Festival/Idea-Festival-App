@@ -38,7 +38,7 @@
         android:layout_width="15dp"
         android:layout_height="20dp"
         android:layout_marginTop="83dp"
-        android:src="@drawable/hole"
+        android:src="@drawable/profile"
         app:layout_constraintEnd_toStartOf="@+id/new_name"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:tint="@color/black" />
@@ -94,7 +94,7 @@
         android:layout_width="20dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/profile"
+        android:src="@drawable/hole"
         app:layout_constraintEnd_toStartOf="@+id/new_id"
         app:layout_constraintTop_toTopOf="@+id/new_id"
         app:tint="@color/black" />

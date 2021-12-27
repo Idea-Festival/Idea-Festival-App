@@ -15,17 +15,14 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater)
         binding.mainImg.clipToOutline = true
 
         binding = FragmentProfileBinding.inflate(layoutInflater)
-        binding.addPost.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                startActivity(Intent(context, writingPostActivity::class.java))
-            }
-        })
-        val view = binding.root
-        return view
+        binding.addPost.setOnClickListener {
+            startActivity(Intent(context, writingPostActivity::class.java))
+        }
+        return binding.root
     }
 }

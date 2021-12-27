@@ -13,13 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_page.*
 
 class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    private lateinit var img: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
-
-        img = findViewById(R.id.profile)
-        img.clipToOutline = true    // 이미지를 둥글게 만들어줌
 
         bottom_navi.setOnNavigationItemSelectedListener(this)
         supportFragmentManager.beginTransaction().add(R.id.main_screen, MainFragment()).commit()
