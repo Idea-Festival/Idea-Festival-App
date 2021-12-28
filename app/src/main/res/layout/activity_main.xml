@@ -42,19 +42,19 @@
         android:layout_height="20dp"
         android:layout_marginTop="88dp"
         android:src="@drawable/hole"
-        app:layout_constraintEnd_toStartOf="@+id/new_email"
+        app:layout_constraintEnd_toStartOf="@+id/email"
         app:layout_constraintTop_toBottomOf="@+id/welcome_to_"
         app:tint="@color/black" />
 
     <EditText
-        android:id="@+id/new_email"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="80dp"
         android:ems="11"
-        android:hint="ID"
+        android:hint="E-mail"
         android:inputType="text"
         android:textAppearance="@style/id"
         android:textFontWeight="400"
@@ -88,7 +88,7 @@
         android:textFontWeight="400"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_email"
+        app:layout_constraintTop_toBottomOf="@+id/email"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
@@ -101,7 +101,7 @@
         android:fontFamily="@font/cafe24ssurround"
         android:gravity="center_horizontal|center_vertical"
         android:lineHeight="13sp"
-        android:text="아이디 찾기 | 비밀번호 찾기"
+        android:text="비밀번호를 잃어버리셧나요?"
         android:textColor="@color/black"
         android:textAppearance="@style/some_id"
         app:layout_constraintEnd_toEndOf="parent"

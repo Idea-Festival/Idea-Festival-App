@@ -1,20 +1,21 @@
 {
   "project_info": {
-    "project_number": "390505276247",
-    "project_id": "idea-festival",
-    "storage_bucket": "idea-festival.appspot.com"
+    "project_number": "333853343197",
+    "firebase_url": "https://pestival-d14d7-default-rtdb.firebaseio.com",
+    "project_id": "pestival-d14d7",
+    "storage_bucket": "pestival-d14d7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:390505276247:android:014138e591ae0a70055412",
+        "mobilesdk_app_id": "1:333853343197:android:92eb145e09d7fc85958a34",
         "android_client_info": {
           "package_name": "com.example.fashionapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "390505276247-sa66svcamr0q9c4t59dbl3agtnjqcbmq.apps.googleusercontent.com",
+          "client_id": "333853343197-d6bb20u8a5hlolrcakecihqh1mba85ej.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.fashionapplication",
@@ -22,20 +23,20 @@
           }
         },
         {
-          "client_id": "390505276247-kg9ildvpq6fq56frnd4d8d4kekg4d91a.apps.googleusercontent.com",
+          "client_id": "333853343197-g953tl045gn4sj2q463sj3adsvughno8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBhdKLQB-UXDWLT9guTlF6R77LW2fi0zks"
+          "current_key": "AIzaSyBhtef6ifBHARr0o9B7T0YVf9Zbi9rDObU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "390505276247-kg9ildvpq6fq56frnd4d8d4kekg4d91a.apps.googleusercontent.com",
+              "client_id": "333853343197-g953tl045gn4sj2q463sj3adsvughno8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

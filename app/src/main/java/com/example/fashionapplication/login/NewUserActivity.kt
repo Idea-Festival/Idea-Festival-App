@@ -15,21 +15,26 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 
 class NewUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewUserBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
-    private lateinit var reference: DatabaseReference
+    private lateinit var databaseRef: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        databaseRef = FirebaseFirestore.getInstance()
 
         binding.createUserBtn.setOnClickListener {
             val name = binding.newName.text.toString()
@@ -58,20 +63,29 @@ class NewUserActivity : AppCompatActivity() {
                         Toast.makeText(this@NewUserActivity, "비밀번호는 6자리 이상이어야 합니다..", Toast.LENGTH_SHORT).show()
                     }
                     val firebaseUser: FirebaseUser? = auth.currentUser
-                    val user:com.example.fashionapplication.data.UserData = com.example.fashionapplication.data.UserData()
-                    user.uid = firebaseUser?.uid
-                    user.email = firebaseUser?.email
-                    user.pw = pw
-                    database = FirebaseDatabase.getInstance()
-                    reference = database.getReference("Users")
+                    val uid = firebaseUser?.uid
+                    val user:com.example.fashionapplication.data.UserData = com.example.fashionapplication.data.UserData(uid ,id,pw, name, email)
 
-                    Toast.makeText(this@NewUserActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@NewUserActivity, MainActivity::class.java))
-                    overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
+                    databaseRef.collection("Users").add(user).addOnSuccessListener {
+
+                        Toast.makeText(this@NewUserActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@NewUserActivity, MainActivity::class.java))
+                        overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
+                    }.addOnFailureListener {
+                        Toast.makeText(this@NewUserActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(this@NewUserActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    try {
+                        p0.result
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(this@NewUserActivity, "이미 있는 이메일 형식입니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
+    }
+    private fun on() {
+
     }
 }
