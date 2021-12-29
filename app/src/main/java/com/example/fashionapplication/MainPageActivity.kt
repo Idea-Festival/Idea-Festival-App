@@ -3,13 +3,12 @@ package com.example.fashionapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import com.example.fashionapplication.bottomNavigation.ClosetFragment
 import com.example.fashionapplication.bottomNavigation.MainFragment
 import com.example.fashionapplication.bottomNavigation.ProfileFragment
 import com.example.fashionapplication.bottomNavigation.SearchFragment
-import com.example.fashionapplication.function.writingPostActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main_page.*
 
 class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +33,11 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 return true
             }
             R.id.item_profile -> {
+                val profileFragment = ProfileFragment()
+                val bundle = Bundle()
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+                bundle.putString("destinationUid", uid)
+                profileFragment.arguments = bundle
                 supportFragmentManager.beginTransaction().replace(R.id.main_screen, ProfileFragment())
                     .commitAllowingStateLoss()
                 return true

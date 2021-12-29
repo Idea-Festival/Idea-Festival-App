@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fashionapplication.R
@@ -35,8 +36,9 @@ class writingPostActivity: AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        back_img.setOnClickListener {
-            startActivity(Intent(this, ProfileFragment::class.java))
+        val back = findViewById<ImageView>(R.id.back_img)
+        back.setOnClickListener {
+            finish()
         }
 
         // album 열기

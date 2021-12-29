@@ -45,12 +45,12 @@
             app:layout_constraintTop_toBottomOf="@+id/main_img" />
 
         <TextView
-            android:id="@+id/star"
+            android:id="@+id/follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/cafe24ssurround"
-            android:text="별점"
+            android:text="팔로워"
             android:textSize="20dp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,9 +65,9 @@
             android:text="게시물"
             android:textSize="20sp"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/star"
+            app:layout_constraintEnd_toStartOf="@+id/follow"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/star" />
+            app:layout_constraintTop_toTopOf="@+id/follow" />
 
         <TextView
             android:id="@+id/fashion"
@@ -78,10 +78,11 @@
             android:textSize="20sp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/star"
-            app:layout_constraintTop_toTopOf="@+id/star" />
+            app:layout_constraintStart_toEndOf="@+id/follow"
+            app:layout_constraintTop_toTopOf="@+id/follow" />
 
         <TextView
+            android:id="@+id/post_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cafe24ssurround"
@@ -98,18 +99,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/cafe24ssurround"
-            android:text="5.0점"
+            android:text="0명"
             android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="@+id/star"
-            app:layout_constraintStart_toStartOf="@+id/star"
-            app:layout_constraintTop_toBottomOf="@+id/star" />
+            app:layout_constraintEnd_toEndOf="@+id/follow"
+            app:layout_constraintStart_toStartOf="@+id/follow"
+            app:layout_constraintTop_toBottomOf="@+id/follow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/cafe24ssurround"
-            android:text="10개"
+            android:text="0개"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="@+id/fashion"
             app:layout_constraintStart_toStartOf="@+id/fashion"
@@ -150,6 +151,7 @@
             app:layout_constraintTop_toBottomOf="@+id/posts" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/posting_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"

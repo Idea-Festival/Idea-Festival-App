@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <ImageView
-        android:id="@+id/star"
+        android:id="@+id/follow"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
@@ -72,9 +72,9 @@
         android:layout_height="25dp"
         android:layout_marginStart="15dp"
         android:src="@drawable/comment_unselected"
-        app:layout_constraintBottom_toBottomOf="@+id/star"
-        app:layout_constraintStart_toEndOf="@+id/star"
-        app:layout_constraintTop_toTopOf="@+id/star" />
+        app:layout_constraintBottom_toBottomOf="@+id/follow"
+        app:layout_constraintStart_toEndOf="@+id/follow"
+        app:layout_constraintTop_toTopOf="@+id/follow" />
 
     <ImageView
         android:layout_width="30dp"

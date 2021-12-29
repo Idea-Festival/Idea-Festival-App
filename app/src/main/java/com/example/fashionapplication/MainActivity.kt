@@ -2,6 +2,7 @@ package com.example.fashionapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,11 @@ class MainActivity : AppCompatActivity() {
                 val email:String = binding.email.text.toString()
                 val pw:String = binding.password.text.toString()
 
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pw)) {
+                    Toast.makeText(this@MainActivity, "이메일과 비밀번호는 필수 입력사항 입니다.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
                 auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(this@MainActivity,
                     object : OnCompleteListener<AuthResult> {
                     override fun onComplete(p0: Task<AuthResult>) {
@@ -41,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                             startActivity(Intent(this@MainActivity, MainPageActivity::class.java))
                             finish()
                         } else {
-                            Toast.makeText(this@MainActivity, "아이디 또는 비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "이메일 또는 비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
