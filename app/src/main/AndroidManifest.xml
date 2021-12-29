@@ -17,8 +17,7 @@
         android:theme="@style/Theme.FashionApplication">
         <activity
             android:name=".function.writingPostActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:exported="false" />
         <activity
             android:name=".bottomNavigation.MainFragment"
             android:exported="false"
@@ -31,7 +30,7 @@
             android:name=".login.NewUserActivity"
             android:exported="false" />
         <activity
-            android:name=".login.SignupActivity"
+            android:name=".login.FindPasswordActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity

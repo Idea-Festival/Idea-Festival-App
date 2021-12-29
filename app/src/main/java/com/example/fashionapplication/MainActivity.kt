@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fashionapplication.databinding.ActivityMainBinding
 import com.example.fashionapplication.login.NewUserActivity
-import com.example.fashionapplication.login.SignupActivity
+import com.example.fashionapplication.login.FindPasswordActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                             startActivity(Intent(this@MainActivity, MainPageActivity::class.java))
                             finish()
                         } else {
-                            Toast.makeText(this@MainActivity, "아이디, 비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "아이디 또는 비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_up,R.anim.fade_out)
         }
         binding.findInformation.setOnClickListener {
-            startActivity(Intent(this, SignupActivity::class.java))
+            startActivity(Intent(this, FindPasswordActivity::class.java))
             overridePendingTransition(R.anim.slide_up,R.anim.fade_out)
         }
     }

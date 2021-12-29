@@ -69,7 +69,9 @@ class NewUserActivity : AppCompatActivity() {
                     databaseRef.collection("Users").add(user).addOnSuccessListener {
 
                         Toast.makeText(this@NewUserActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@NewUserActivity, MainActivity::class.java))
+                        val intent = Intent(this@NewUserActivity, MainActivity::class.java)
+                        intent.putExtra("userName",name)
+                        startActivity(intent)
                         overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
                     }.addOnFailureListener {
                         Toast.makeText(this@NewUserActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()

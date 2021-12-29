@@ -11,8 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/hashi_text2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2">
@@ -34,13 +34,13 @@
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:src="@drawable/photo_picture"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout"
             app:layout_constraintTop_toTopOf="@+id/upload_img"
-            app:layout_constraintVertical_bias="0.387"
-            android:visibility="visible" />
+            app:layout_constraintVertical_bias="0.387" />
 
         <TextView
             android:id="@+id/add"
@@ -51,10 +51,10 @@
             android:text="사진 추가하기"
             android:textColor="#0085FF"
             android:textSize="15sp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@+id/upload_img"
             app:layout_constraintStart_toStartOf="@+id/upload_img"
-            app:layout_constraintTop_toBottomOf="@+id/upload"
-            android:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/upload" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.Toolbar
@@ -91,7 +91,7 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/add_hashi_tag"
         app:layout_constraintEnd_toStartOf="@+id/hashi2"
@@ -178,95 +178,22 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="25dp"
         android:background="#E5E5E5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/comment_post"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <ImageView
-        android:id="@+id/cloth_out"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/clothes_out"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        tools:ignore="TouchTargetSizeCheck"/>
-
-    <EditText
-        android:id="@+id/url_outerwear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:fontFamily="@font/cafe24ssurround"
-        android:gravity="center"
-        android:hint="겉옷의 URL"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/cloth_out"
-        app:layout_constraintStart_toEndOf="@+id/cloth_out"
-        app:layout_constraintTop_toTopOf="@+id/cloth_out"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <ImageView
-        android:id="@+id/cloth_in"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/shirt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cloth_out" />
-
-    <EditText
-        android:id="@+id/url_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:fontFamily="@font/cafe24ssurround"
-        android:gravity="center"
-        android:hint="상의의 URL"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/cloth_in"
-        app:layout_constraintStart_toEndOf="@+id/cloth_in"
-        app:layout_constraintTop_toTopOf="@+id/cloth_in"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <ImageView
-        android:id="@+id/pants"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
-        android:src="@drawable/pants"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cloth_in" />
-
-    <EditText
-        android:id="@+id/url_pants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:fontFamily="@font/cafe24ssurround"
-        android:gravity="center"
-        android:hint="하의의 URL"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/pants"
-        app:layout_constraintStart_toEndOf="@+id/pants"
-        app:layout_constraintTop_toTopOf="@+id/pants"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         tools:ignore="TouchTargetSizeCheck" />
 
     <View
         android:id="@+id/uploading_post"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/btn_design"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/url_pants" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"

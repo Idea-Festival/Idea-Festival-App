@@ -7,8 +7,10 @@ data class PostDto(
     var userId:String? = null,   // 올린 유저의 이미지 관리
     var timestamp: Long? = null,    // 몇 시에 올렸는지 관리
     var favoriteCount: Int = 0,  // 몇개의 좋아요를 받았는지 관리
-    var favorite: Map<String, Boolean> = HashMap()
-) {
+    var tag1: String? = null,   // 해시태그들
+    var tag2: String? = null,
+    var tag3: String? = null,
+    var favorite: MutableMap<String, Boolean> = HashMap()) {
     data class Comment(     // 댓글 관리 클래스
         var uri: String? = null,
         var userId: String? = null,

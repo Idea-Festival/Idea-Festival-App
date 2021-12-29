@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fashionapplication.R
+import com.example.fashionapplication.bottomNavigation.ProfileFragment
 import com.example.fashionapplication.data.PostDto
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.write_posting.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.log
 
 class writingPostActivity: AppCompatActivity() {
 
@@ -31,11 +35,18 @@ class writingPostActivity: AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // album 열기
-        val photoIntent = Intent(Intent.ACTION_PICK)
-        photoIntent.type = "image/*"
-        startActivityForResult(photoIntent, PICK_IMAGE_FOR_ALBUM)
+        back_img.setOnClickListener {
+            startActivity(Intent(this, ProfileFragment::class.java))
+        }
 
+        // album 열기
+        upload_img.setOnClickListener {
+            val photoIntent = Intent(Intent.ACTION_PICK)
+            photoIntent.type = "image/*"
+            startActivityForResult(photoIntent, PICK_IMAGE_FOR_ALBUM)
+        }
+
+        // 업로드
         uploading_post.setOnClickListener {
             contentUpload()
         }
@@ -66,15 +77,20 @@ class writingPostActivity: AppCompatActivity() {
         storageRef.putFile(uriPhoto!!).addOnSuccessListener {
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 var postDto = PostDto()
+                val a = intent.getStringArrayExtra("userName")
+                Log.d("tag", a.toString())
 
                 postDto.imageUrl = uri.toString()
                 postDto.uid = auth.currentUser?.uid
                 postDto.userId = auth.currentUser?.email
                 postDto.explain = comment_post.text.toString()
+                postDto.tag1 = hashi_text1.text.toString()
+                postDto.tag2 = hashi_text2.text.toString()
+                postDto.tag3 = hashi_text3.text.toString()
                 postDto.timestamp = System.currentTimeMillis()
                 firestore.collection("images").document().set(postDto)
-
                 setResult(Activity.RESULT_OK)
+                Toast.makeText(this,"업로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
