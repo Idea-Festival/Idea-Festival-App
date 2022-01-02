@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/searching_user_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/profile_img" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/searching_user_profile"
+        android:layout_marginStart="5dp"
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/searching_user_name"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:fontFamily="@font/cafe24ssurround"/>
+        <TextView
+            android:id="@+id/searching_user_fullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24ssurround"
+            android:text="fullname"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/searching_following"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:background="@drawable/btn_design"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

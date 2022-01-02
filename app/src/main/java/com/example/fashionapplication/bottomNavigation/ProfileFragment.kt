@@ -1,88 +1,192 @@
 package com.example.fashionapplication.bottomNavigation
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
-import androidx.appcompat.widget.LinearLayoutCompat
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.example.fashionapplication.Adapter.MyPhotoAdapter
 import com.example.fashionapplication.R
-import com.example.fashionapplication.data.PostDto
-import kotlinx.android.synthetic.main.fragment_profile.view.*
+import com.example.fashionapplication.data.Post
+import com.example.fashionapplication.function.OptionsActivity
 import com.example.fashionapplication.function.writingPostActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.post_recyclerview_item.view.*
+import com.google.firebase.database.DataSnapshot
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProfileFragment : Fragment() {
 
-    private var fragmentView: View? = null
-    private lateinit var firestore: FirebaseFirestore
-    var uid:String? = null
-    private lateinit var auth: FirebaseAuth
-    private lateinit var imageview: ImageView
+    var firebaseuser: FirebaseUser? = null
+    lateinit var profileid: String
+    lateinit var recyclerView: RecyclerView
+    var postList: ArrayList<Post> = arrayListOf()
+    lateinit var adapter: MyPhotoAdapter
+
+    lateinit var username:TextView
+    lateinit var profileImg: CircleImageView
+    lateinit var option: ImageView
+    lateinit var follow: Button
+    lateinit var postCount: TextView
+    lateinit var follower: TextView
+    lateinit var fashionCount: TextView
+    lateinit var addPost: ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
-        uid = arguments?.getString("destinationUid")
-        firestore = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-        fragmentView?.posting_recyclerview?.adapter = ProfileFragmentRecyclerAdapter()
-        Log.d("tag","tlqk3")
-        fragmentView?.posting_recyclerview?.layoutManager = GridLayoutManager(activity, 3)
+    ): View? {
+        val view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
 
-        val addPost = fragmentView?.findViewById<ImageView>(R.id.add_post)
-        addPost?.setOnClickListener {
-            startActivity(Intent(activity, writingPostActivity::class.java))
+        firebaseuser = FirebaseAuth.getInstance().currentUser
+        val prefs: SharedPreferences = requireContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE)
+        profileid = prefs.getString("profileid", "none").toString()
+
+        username = view.findViewById(R.id.user_name)
+        profileImg = view.findViewById(R.id.main_img)
+        option = view.findViewById(R.id.profile_setting)
+        follow = view.findViewById(R.id.profile_follow_btn)
+        postCount = view.findViewById(R.id.post_count)
+        follower = view.findViewById(R.id.follower_count)
+        fashionCount = view.findViewById(R.id.fashion_count)
+        addPost = view.findViewById(R.id.add_post)
+
+        recyclerView = view.findViewById(R.id.posting_recyclerview)
+        recyclerView.setHasFixedSize(true)
+        val linearLayoutManager: LinearLayoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = linearLayoutManager
+        adapter = MyPhotoAdapter(context, postList)
+        recyclerView.adapter = adapter
+
+        userInfo()
+        getFollowers()
+        getNrPosts()
+        myPhotos()
+
+        addPost.setOnClickListener {
+            startActivity(Intent(context, writingPostActivity::class.java))
         }
-        return fragmentView!!
-    }
-    inner class ProfileFragmentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        var postDto: ArrayList<PostDto> = arrayListOf()
-        init {
-            // db의 값 읽어오기, uid 가 내 uid 일때만 검색
-            firestore.collection("images").whereEqualTo("uid",uid).addSnapshotListener { querySnapShot, firebaseFirestoreExeption ->
-                if (querySnapShot == null) return@addSnapshotListener
 
-                // get data
-                for (snapshot in querySnapShot.documents) {     // 원인
-                    Log.d("tag","tlqkf")
-                    val item = snapshot.toObject(PostDto::class.java)
-                    postDto.add(item!!)
+        option.setOnClickListener {
+            startActivity(Intent(context, OptionsActivity::class.java))
+        }
+
+        if (profileid == firebaseuser?.uid) {
+            follow.visibility = View.GONE
+        } else {
+            checkFollow()
+        }
+
+        follow.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                val btn: String = follow.text.toString()
+                if (btn.equals(follow)) {
+                    FirebaseDatabase.getInstance().reference.child("Follow")
+                        .child(firebaseuser!!.uid).child("following").child(profileid)
+                        .setValue(true)
+                    FirebaseDatabase.getInstance().reference.child("Follow")
+                        .child(profileid).child("followers").child(firebaseuser!!.uid)
+                        .setValue(true)
+                } else if (btn.equals("following")) {
+                    FirebaseDatabase.getInstance().reference.child("Follow")
+                        .child(firebaseuser!!.uid).child("following").child(profileid).removeValue()
+                    FirebaseDatabase.getInstance().reference.child("Follow")
+                        .child(firebaseuser!!.uid).child("following").child(profileid).removeValue()
                 }
-                fragmentView?.post_count?.text = postDto.size.toString()
-                notifyDataSetChanged()
             }
-        }
+        })
+        return view
+    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            Log.d("tag","tlqkf1")
-            val width = resources.displayMetrics.widthPixels / 3
-            imageview = ImageView(parent.context)
-            imageview.layoutParams = LinearLayoutCompat.LayoutParams(width,width*2)   // 이미지 사이즈 지정
-            return ProfileViewHolder(imageview)
-        }
+    // 포스팅 사진 정보 받아오기 메서드
+    private fun myPhotos() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Posts")
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                postList.clear()
+                for (dataSnapshot in snapshot.children) {
+                    val post: Post? = dataSnapshot.getValue(Post::class.java)
+                    if (post?.publisher.equals(profileid)) {
+                        postList.add(post!!)
+                    }
+                }
+                postList.reverse()       // 최신순 정렬
+                adapter.notifyDataSetChanged()
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
-        inner class ProfileViewHolder(var imageview: ImageView) : RecyclerView.ViewHolder(imageview)
+    private fun userInfo() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (context == null) {
+                    return
+                }
+                val user = snapshot.getValue(com.example.fashionapplication.data.User::class.java)
+                Glide.with(context!!).load(user?.imageurl).into(main_img)
+                username.text = user?.username
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            Log.d("tag","tlqkf2")
-            val imageview = (holder as ProfileViewHolder).imageview
-            Glide.with(holder.itemView.context).load(postDto[position]).apply(RequestOptions().centerCrop()).into(imageview)
-        }
+    private fun checkFollow() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().reference
+            .child("Follow").child(firebaseuser!!.uid).child("following")
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.child(profileid).exists()) {
+                    follow.text = "following"
+                } else {
+                    follow.text = "follow"
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
-        override fun getItemCount(): Int {
-            return postDto.size
-        }
+//    follower 숫자 얻기 메서드
+    private fun getFollowers() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().reference
+            .child("Follow").child(profileid).child("followers")
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                follower.text = ""+snapshot.childrenCount+"명"
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    // 포스팅 갯수 세기 메서드
+    private fun getNrPosts() {
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Post")
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var i: Int = 0
+                for (dataSnapshot in snapshot.children) {
+                    val post: Post? = dataSnapshot.getValue(Post::class.java)
+                    if (post?.publisher.equals(profileid)) {
+                        i++
+                    }
+                }
+                post_count.text = "${i}개"
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }

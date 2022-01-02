@@ -10,15 +10,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fashionapplication.R
-import com.example.fashionapplication.bottomNavigation.ProfileFragment
 import com.example.fashionapplication.data.PostDto
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.write_posting.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 class writingPostActivity: AppCompatActivity() {
 
@@ -26,7 +25,7 @@ class writingPostActivity: AppCompatActivity() {
     private lateinit var storage : FirebaseStorage
     var uriPhoto : Uri? = null
     lateinit var auth: FirebaseAuth
-    lateinit var firestore: FirebaseFirestore
+    lateinit var reference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.write_posting)
@@ -34,7 +33,7 @@ class writingPostActivity: AppCompatActivity() {
         // 초기화
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        reference = FirebaseDatabase.getInstance().getReference("Posts")
 
         val back = findViewById<ImageView>(R.id.back_img)
         back.setOnClickListener {
@@ -81,6 +80,7 @@ class writingPostActivity: AppCompatActivity() {
                 var postDto = PostDto()
                 val a = intent.getStringArrayExtra("userName")
                 Log.d("tag", a.toString())
+                val postId: String? = reference.push().key
 
                 postDto.imageUrl = uri.toString()
                 postDto.uid = auth.currentUser?.uid
@@ -90,7 +90,7 @@ class writingPostActivity: AppCompatActivity() {
                 postDto.tag2 = hashi_text2.text.toString()
                 postDto.tag3 = hashi_text3.text.toString()
                 postDto.timestamp = System.currentTimeMillis()
-                firestore.collection("images").document().set(postDto)
+                reference.child(postId!!).setValue(postDto)
                 setResult(Activity.RESULT_OK)
                 Toast.makeText(this,"업로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 finish()

@@ -32,7 +32,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/search"
             app:layout_constraintEnd_toEndOf="@+id/search"
             app:layout_constraintStart_toStartOf="@+id/search"
-            app:layout_constraintTop_toTopOf="@+id/search" />
+            app:layout_constraintTop_toTopOf="@+id/search"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
             android:id="@+id/search_btn"
@@ -43,5 +44,24 @@
             app:layout_constraintBottom_toBottomOf="@+id/search"
             app:layout_constraintEnd_toEndOf="@+id/search"
             app:layout_constraintTop_toTopOf="@+id/search" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="25dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

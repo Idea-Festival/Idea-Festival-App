@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/post_user_profile"
+        android:id="@+id/post_user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24ssurround"
@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <ImageView
-        android:id="@+id/follow"
+        android:id="@+id/star"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
@@ -72,11 +72,12 @@
         android:layout_height="25dp"
         android:layout_marginStart="15dp"
         android:src="@drawable/comment_unselected"
-        app:layout_constraintBottom_toBottomOf="@+id/follow"
-        app:layout_constraintStart_toEndOf="@+id/follow"
-        app:layout_constraintTop_toTopOf="@+id/follow" />
+        app:layout_constraintBottom_toBottomOf="@+id/star"
+        app:layout_constraintStart_toEndOf="@+id/star"
+        app:layout_constraintTop_toTopOf="@+id/star" />
 
     <ImageView
+        android:id="@+id/bookmark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/tag_unselected"

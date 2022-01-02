@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frame_lay"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".bottomNavigation.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/profile_setting"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
@@ -25,9 +27,10 @@
             android:id="@+id/main_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="44dp"
             android:src="@drawable/profile_img"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.192"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,27 +38,41 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/cafe24ssurround"
-            android:textColor="@color/black"
             android:text="UserName"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.319"
+            app:layout_constraintStart_toEndOf="@+id/main_img"
+            app:layout_constraintTop_toTopOf="@+id/main_img" />
+
+        <Button
+            android:id="@+id/profile_follow_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/cafe24ssurround"
+            android:text="follow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.663"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_name" />
+
+        <TextView
+            android:id="@+id/follower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/cafe24ssurround"
+            android:text="팔로워"
+            android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_img" />
-
-        <TextView
-            android:id="@+id/follow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/cafe24ssurround"
-            android:text="팔로워"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
         <TextView
             android:id="@+id/post"
@@ -65,9 +82,9 @@
             android:text="게시물"
             android:textSize="20sp"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/follow"
+            app:layout_constraintEnd_toStartOf="@+id/follower"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/follow" />
+            app:layout_constraintTop_toTopOf="@+id/follower" />
 
         <TextView
             android:id="@+id/fashion"
@@ -78,8 +95,8 @@
             android:textSize="20sp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/follow"
-            app:layout_constraintTop_toTopOf="@+id/follow" />
+            app:layout_constraintStart_toEndOf="@+id/follower"
+            app:layout_constraintTop_toTopOf="@+id/follower" />
 
         <TextView
             android:id="@+id/post_count"
@@ -94,18 +111,19 @@
             app:layout_constraintTop_toBottomOf="@+id/post" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/follower_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/cafe24ssurround"
             android:text="0명"
             android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="@+id/follow"
-            app:layout_constraintStart_toStartOf="@+id/follow"
-            app:layout_constraintTop_toBottomOf="@+id/follow" />
+            app:layout_constraintEnd_toEndOf="@+id/follower"
+            app:layout_constraintStart_toStartOf="@+id/follower"
+            app:layout_constraintTop_toBottomOf="@+id/follower" />
 
         <TextView
+            android:id="@+id/fashion_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -129,7 +147,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.511"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/follower_count" />
 
         <ImageView
             android:id="@+id/add_post"
@@ -153,12 +171,16 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/posting_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/posting_recyclerview_save"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/line" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</LinearLayout>

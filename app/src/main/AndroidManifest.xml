@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.fashionapplication">
     <!-- 인터넷 커미션 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- firebase 권한 -->
+    <!-- firebase 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,8 +14,14 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/rectangle_1"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.FashionApplication">
+        android:theme="@style/Theme.FashionApplication"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".function.OptionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".function.CommentActivity"
+            android:exported="false" />
         <activity
             android:name=".function.writingPostActivity"
             android:exported="false" />

@@ -3,7 +3,6 @@ package com.example.fashionapplication.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.service.autofill.UserData
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
@@ -15,13 +14,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
+import com.example.fashionapplication.MainPageActivity
+import java.util.*
+import kotlin.collections.HashMap
 
 class NewUserActivity : AppCompatActivity() {
 
@@ -56,26 +53,34 @@ class NewUserActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email,pw).addOnCompleteListener(this, object: OnCompleteListener<AuthResult>{
             override fun onComplete(p0: Task<AuthResult>) {
                 if (p0.isSuccessful) {
+                    val firebaseUser: FirebaseUser? = auth.currentUser
+                    val userid = firebaseUser?.uid
+                    val reference = FirebaseDatabase.getInstance().reference.child("Users").child(userid!!)
+                    val hashMap: HashMap<String, Any> = HashMap()
+
                     if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(id) || TextUtils.isEmpty(pw)) {
                         binding.warning.visibility = View.VISIBLE
                     }
                     if (pw.length < 6) {
                         Toast.makeText(this@NewUserActivity, "비밀번호는 6자리 이상이어야 합니다..", Toast.LENGTH_SHORT).show()
                     }
-                    val firebaseUser: FirebaseUser? = auth.currentUser
-                    val uid = firebaseUser?.uid
-                    val user:com.example.fashionapplication.data.UserData = com.example.fashionapplication.data.UserData(uid ,id,pw, name, email)
 
-                    databaseRef.collection("Users").add(user).addOnSuccessListener {
+                    hashMap.put("id",userid)
+                    hashMap.put("username", name.lowercase(Locale.getDefault()))
+                    hashMap.put("email",email)
+                    hashMap.put("pw",pw)
+                    hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/pestival-d14d7.appspot.com/o/profile_img.png?alt=media&token=327b430d-9cb1-4151-9eee-2d4300cd9cf9")
 
-                        Toast.makeText(this@NewUserActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@NewUserActivity, MainActivity::class.java)
-                        intent.putExtra("userName",name)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.slide_down, R.anim.fade_out)
-                    }.addOnFailureListener {
-                        Toast.makeText(this@NewUserActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
-                    }
+                    reference.setValue(hashMap).addOnCompleteListener(object: OnCompleteListener<Void> {
+                        override fun onComplete(p0: Task<Void>) {
+                            if (p0.isSuccessful) {
+                                Toast.makeText(this@NewUserActivity, "가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@NewUserActivity, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                            }
+                        }
+                    })
                 } else {
                     try {
                         p0.result
@@ -86,8 +91,5 @@ class NewUserActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-    private fun on() {
-
     }
 }
