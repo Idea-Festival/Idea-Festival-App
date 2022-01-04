@@ -17,6 +17,12 @@
         android:theme="@style/Theme.FashionApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".function.CommentStarActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
             android:name=".function.OptionsActivity"
             android:exported="false" />
         <activity

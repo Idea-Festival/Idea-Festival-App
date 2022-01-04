@@ -10,6 +10,7 @@ data class PostDto(
     var tag1: String? = null,   // 해시태그들
     var tag2: String? = null,
     var tag3: String? = null,
+    var bookmark: MutableMap<String, Boolean> = HashMap(),
     var favorite: MutableMap<String, Boolean> = HashMap()) {
     data class Comment(     // 댓글 관리 클래스
         var uri: String? = null,

@@ -32,11 +32,12 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/font/custom_font_family.xml" value="0.2796875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/a.xml" value="0.2" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_comment.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_comment_star.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_join.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_main_page.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_new_user.xml" value="0.264" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_options.xml" value="0.4" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_options.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_sigup.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_splash.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/comment_recycler_item.xml" value="0.264" />

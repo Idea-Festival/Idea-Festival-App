@@ -29,32 +29,6 @@
             app:layout_constraintStart_toStartOf="@+id/constraintLayout"
             app:layout_constraintTop_toTopOf="@id/constraintLayout" />
 
-        <ImageView
-            android:id="@+id/upload"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:src="@drawable/photo_picture"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@+id/upload_img"
-            app:layout_constraintVertical_bias="0.387" />
-
-        <TextView
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/cafe24ssurround"
-            android:text="사진 추가하기"
-            android:textColor="#0085FF"
-            android:textSize="15sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@+id/upload_img"
-            app:layout_constraintStart_toStartOf="@+id/upload_img"
-            app:layout_constraintTop_toBottomOf="@+id/upload" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.Toolbar

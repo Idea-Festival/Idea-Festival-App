@@ -26,19 +26,15 @@
             android:layout_height="wrap_content"
             android:text="username"
             android:fontFamily="@font/cafe24ssurround"/>
-        <TextView
-            android:id="@+id/searching_user_fullname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cafe24ssurround"
-            android:text="fullname"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/searching_following"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:background="@drawable/btn_design"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        android:text="follow"
+        android:textColor="@color/white"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:visibility="gone"/>

@@ -30,6 +30,7 @@
             android:padding="40dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/option_profile_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
@@ -142,13 +143,48 @@
             android:layout_marginStart="10dp"
             android:text="로그아웃"/>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/option_hoewontaltoe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cafe24ssurround"
+            android:layout_marginEnd="10dp"
             android:text="회원탈퇴"
-            android:layout_marginStart="283dp"
             android:textColor="#ff0000" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/option_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/ok"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_design"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="저장"
+            android:fontFamily="@font/cafe24ssurround"
+            app:layout_constraintBottom_toBottomOf="@+id/ok"
+            app:layout_constraintEnd_toEndOf="@+id/ok"
+            app:layout_constraintStart_toStartOf="@+id/ok"
+            app:layout_constraintTop_toTopOf="@+id/ok" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
