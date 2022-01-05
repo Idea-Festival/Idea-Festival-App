@@ -50,9 +50,6 @@ class writingPostActivity: AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             PICK_IMAGE_FROM_ALBUM -> {
-                data?.data.let {
-                    cropImage(it!!)     // 이미지를 선택했을 때 수행
-                }
                 photoUri = data?.data
                 upload_img.setImageURI(photoUri)
             }
@@ -68,12 +65,6 @@ class writingPostActivity: AppCompatActivity() {
             }
             else -> finish()
         }
-    }
-
-    private fun cropImage(uri: Uri) {
-        CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON)
-            .setAspectRatio(1,1)
-            .start(this)
     }
 
     private fun contentUpload() {
