@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/post_user"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -60,11 +60,12 @@
         android:id="@+id/star"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="12dp"
         android:src="@drawable/star_unselected"
         app:layout_constraintBottom_toBottomOf="@+id/like"
         app:layout_constraintStart_toEndOf="@+id/like"
-        app:layout_constraintTop_toTopOf="@+id/like" />
+        app:layout_constraintTop_toTopOf="@+id/like"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/comment"
