@@ -29,24 +29,24 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_search, container, false)
-        a = view.findViewById(searching_user_profile)
-        recyclerView = view.findViewById(R.id.search_recyclerview)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        searchBar = view.findViewById(R.id.search_text)
-
-        mUsers = arrayListOf()
-        userAdapter = SearchAdapter(requireContext(), mUsers, true)
-        recyclerView.adapter = userAdapter
-
-        readUsers()
-        searchBar.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchUsers(p0.toString().lowercase(Locale.getDefault()))
-            }
-            override fun afterTextChanged(p0: Editable?) {}
-        })
+//        a = view.findViewById(searching_user_profile)
+//        recyclerView = view.findViewById(R.id.search_recyclerview)
+//        recyclerView.setHasFixedSize(true)
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        searchBar = view.findViewById(R.id.search_text)
+//
+//        mUsers = arrayListOf()
+//        userAdapter = SearchAdapter(requireContext(), mUsers, true)
+//        recyclerView.adapter = userAdapter
+//
+//        readUsers()
+//        searchBar.addTextChangedListener(object: TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                searchUsers(p0.toString().lowercase(Locale.getDefault()))
+//            }
+//            override fun afterTextChanged(p0: Editable?) {}
+//        })
         return view
     }
 
