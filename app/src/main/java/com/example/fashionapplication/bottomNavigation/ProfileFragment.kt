@@ -1,49 +1,41 @@
 package com.example.fashionapplication.bottomNavigation
 
-import android.content.Context
+import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fashionapplication.Adapter.MyPhotoAdapter
-import com.example.fashionapplication.R
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.data.User
+import com.example.fashionapplication.databinding.FragmentProfileBinding
 import com.example.fashionapplication.function.OptionsActivity
 import com.example.fashionapplication.function.writingPostActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_main_page.*
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
 
-    private var mySaves: ArrayList<String> = arrayListOf()
     private lateinit var firebaseUser: FirebaseUser
     private var profileid: String? = null
-
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentProfileBinding
     private lateinit var adapter: MyPhotoAdapter
     private lateinit var postList: ArrayList<PostDto>
-    private lateinit var option: ImageView
-    private lateinit var profileImg: CircleImageView
-    private lateinit var addPost: ImageView
-    private lateinit var follower: TextView
-    private lateinit var username: TextView
-    private lateinit var followBtn: Button
+    private lateinit var auth: FirebaseAuth
+    val pickImageFromAlbum = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,33 +44,36 @@ class ProfileFragment : Fragment() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         val pres: SharedPreferences = requireContext().getSharedPreferences("PRES", MODE_PRIVATE)
         profileid = pres.getString("profileid", "none")
+        auth = FirebaseAuth.getInstance()
 
-        val view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
-        addPost = view.findViewById(R.id.add_post)
-        option = view.findViewById(R.id.profile_setting)
-        profileImg = view.findViewById(R.id.main_img)
-        follower = view.findViewById(R.id.follower_count)
-        followBtn = view.findViewById(R.id.profile_follow_btn)
-        username = view.findViewById(R.id.user_name)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        recyclerView = view.findViewById(R.id.posting_recyclerview)
-        recyclerView.setHasFixedSize(true)
-        var layoutmanager: LinearLayoutManager = GridLayoutManager(context, 3)
-        recyclerView.layoutManager = layoutmanager
+
+        binding.postingRecyclerview.setHasFixedSize(true)
+        val layoutmanager: LinearLayoutManager = GridLayoutManager(context, 3)
+        binding.postingRecyclerview.layoutManager = layoutmanager
         postList = arrayListOf()
         adapter = MyPhotoAdapter(context, postList)
-        recyclerView.adapter = adapter
+        binding.postingRecyclerview.adapter = adapter
 
         userInfo()
         user()
+        uploadProfileImage()    // 이미지 업로드
+
+        binding.mainImg.setOnClickListener {
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent, pickImageFromAlbum)
+        }
 
         if (profileid.equals(firebaseUser.uid)) {
-            followBtn.visibility = View.VISIBLE
+            binding.profileFollowBtn.visibility = View.VISIBLE
         } else {
             checkFollow()
         }
-        followBtn.setOnClickListener {
-            val btn = followBtn.text.toString()
+
+        binding.profileFollowBtn.setOnClickListener {
+            val btn = binding.profileFollowBtn.text.toString()
             if (btn.equals("follow")) {
                 FirebaseDatabase.getInstance().reference.child("Follow").child(firebaseUser.uid)
                     .child("following").child(profileid!!).setValue(true)
@@ -87,27 +82,24 @@ class ProfileFragment : Fragment() {
                 addNotification()
             }
         }
-        addPost.setOnClickListener {
+        binding.addPost.setOnClickListener {
             startActivity(Intent(context, writingPostActivity::class.java))
         }
 
-        option.setOnClickListener {
+        binding.profileSetting.setOnClickListener {
             startActivity(Intent(context, OptionsActivity::class.java))
         }
 
-        return view
+        return binding.root
     }
 
     private fun user() {
-        val prefs: SharedPreferences = requireContext().getSharedPreferences("PREFS", MODE_PRIVATE)
-        val profileid = prefs.getString("profileid", "none").toString()
-        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(auth.uid.toString())
 
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
-                Glide.with(context!!).load(user?.imageurl).into(main_img)
-                username.text = user?.username
+                binding.userName.text = user?.username
             }
             override fun onCancelled(error: DatabaseError) {}
         })
@@ -123,10 +115,28 @@ class ProfileFragment : Fragment() {
                 val user = snapshot.getValue(User::class.java)
                 if (snapshot.exists()) {
                     Glide.with(context!!).load(user?.imageurl).into(main_img)
-                    username.text = user?.username
+                    binding.userName.text = user?.username
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun uploadProfileImage() {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseDatabase.reference.child("Users").child(auth.uid.toString()).child("imageurl").addValueEventListener(object :ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val image = snapshot.getValue(String::class.java)
+                Glide.with(context!!)
+                    .load(image)
+                    .circleCrop()
+                    .into(binding.mainImg)
+                Log.d("TAG", "onDataChange: ${image.toString()}")   // 이미지 https 주소
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
         })
     }
 
@@ -136,9 +146,9 @@ class ProfileFragment : Fragment() {
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(profileid!!).exists()) {
-                    followBtn.text = "following"
+                    binding.profileFollowBtn.text = "following"
                 } else {
-                    followBtn.text = "follow"
+                    binding.profileFollowBtn.text = "follow"
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
@@ -156,5 +166,27 @@ class ProfileFragment : Fragment() {
         hashMap.put("ispost", false)
 
         reference.push().setValue(hashMap)
+    }
+
+    var uriPhoto: Uri? = null
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == pickImageFromAlbum) {
+            if (resultCode == Activity.RESULT_OK) {
+                uriPhoto = data?.data
+                binding.mainImg.setImageURI(uriPhoto)
+                funImageUpload()
+            }
+        }
+    }
+
+    private fun funImageUpload() {
+        val imageFileName = "${auth.uid}.png"
+        val storageRef = FirebaseStorage.getInstance().reference.child("profileImage").child(imageFileName)
+
+        storageRef.putFile(uriPhoto!!).addOnSuccessListener {
+            Toast.makeText(context, "사진이 업로드됨", Toast.LENGTH_SHORT).show()
+        }
     }
 }

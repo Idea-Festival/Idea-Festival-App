@@ -1,33 +1,24 @@
 package com.example.fashionapplication
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.fashionapplication.bottomNavigation.ClosetFragment
-import com.example.fashionapplication.bottomNavigation.MainFragment
-import com.example.fashionapplication.bottomNavigation.ProfileFragment
-import com.example.fashionapplication.bottomNavigation.SearchFragment
 import com.example.fashionapplication.databinding.ActivityMainPageBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_main_page.*
 
 class MainPageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainPageBinding
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auth = FirebaseAuth.getInstance()
 
         user()
         setBtmNavi()
@@ -40,14 +31,13 @@ class MainPageActivity : AppCompatActivity() {
     }
 
     private fun user() {
-        val prefs: SharedPreferences = this.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
-        val profileid = prefs.getString("profileid", "none").toString()
-        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
-
+        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(auth.uid.toString()).child("imageurl")
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(com.example.fashionapplication.data.User::class.java)
-                Glide.with(this@MainPageActivity).load(user?.imageurl).into(profile)
+                val user = snapshot.getValue(String::class.java)
+                Glide.with(this@MainPageActivity)
+                    .load(user)
+                    .into(binding.profile)
             }
             override fun onCancelled(error: DatabaseError) {}
         })
