@@ -83,28 +83,7 @@ class ProfileFragment : Fragment() {
             }
         }
         binding.addPost.setOnClickListener {
-            val intent = Intent(context, writingPostActivity::class.java)
-            val imageRef = FirebaseDatabase.getInstance().reference
-                .child("Users").child(auth.uid.toString()).child("imageurl")
-            imageRef.addValueEventListener(object :ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    intent.putExtra("profileImage", snapshot.getValue(String::class.java).toString())
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
-
-            val referenceRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-                .child("Users").child(auth.uid.toString()).child("username")
-            referenceRef.addValueEventListener(object :ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    intent.putExtra("username", snapshot.getValue(String::class.java).toString())
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
-
-            startActivity(intent)
+            startActivity(Intent(context, writingPostActivity::class.java))
         }
 
         binding.profileSetting.setOnClickListener {

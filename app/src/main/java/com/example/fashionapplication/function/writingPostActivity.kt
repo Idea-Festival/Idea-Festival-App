@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.fashionapplication.data.OnGetDataListener
 import com.example.fashionapplication.databinding.WritePostingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -34,9 +35,6 @@ class writingPostActivity: AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
         reference = FirebaseDatabase.getInstance().reference.child("Posts")
-
-        Log.d("TAG", "intent: ${intent.getStringExtra("username")}")
-        Log.d("TAG", "intent: ${intent.getSerializableExtra("profileImage")}")
 
         // image crop, open album
         var photoPickerIntent = Intent(Intent.ACTION_PICK)
@@ -91,32 +89,40 @@ class writingPostActivity: AppCompatActivity() {
     }
 
     private fun getData() {
-        // data 담기
-//        val referenceRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-//            .child("Users").child(auth?.uid.toString()).child("username")
-//        referenceRef.addListenerForSingleValueEvent(object :ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val value = snapshot.getValue(String::class.java).toString()
-//                hashMap.put("profileImage", value)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.d("TAG", "onCancelled: error!!")
-//            }
-//        })
-//
-//        val imageRef = FirebaseDatabase.getInstance().reference
-//            .child("Users").child(auth?.uid.toString()).child("imageurl")
-//        imageRef.addListenerForSingleValueEvent(object :ValueEventListener{
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val value = snapshot.getValue(String::class.java).toString()
-//                hashMap.put("profileImage", value)
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.d("TAG", "onCancelled: error!!")
-//            }
-//        })
+        // get user info
+        val userRef = FirebaseDatabase.getInstance().reference
+        getUserInfo(userRef.child("Users").child(auth?.uid.toString()).child("imageurl"), object : OnGetDataListener {
+            override fun onSuccess(dataSnapShot: DataSnapshot) {
+                reference?.child(auth?.uid.toString())?.child(binding.commentPost.text.toString())?.child("profile")?.setValue(dataSnapShot.getValue(String::class.java).toString())
+                Log.d("TAG", "onSuccess getUserInfo: $dataSnapShot")
+            }
 
+            override fun onStart() {
+                Log.d("TAG", "onStart: Started")
+            }
+
+            override fun onFailure() {
+                Log.d("TAG", "onFailure: Fail")
+            }
+        })
+
+        getUserInfo(userRef.child("Users").child(auth?.uid.toString()).child("username"), object : OnGetDataListener {
+            override fun onSuccess(dataSnapShot: DataSnapshot) {
+                reference?.child(auth?.uid.toString())?.child(binding.commentPost.text.toString())?.child("username")?.setValue(dataSnapShot.getValue(String::class.java).toString())
+                Log.d("TAG", "onSuccess getUserInfo: ${dataSnapShot.getValue(String::class.java).toString()}")
+            }
+
+            override fun onStart() {
+                Log.d("TAG", "onStart: Started")
+            }
+
+            override fun onFailure() {
+                Log.d("TAG", "onFailure: Fail")
+            }
+        })
+
+
+        // data 담기
         hashMap.put("explain", binding.commentPost.text.toString())
         hashMap.put("tag1", binding.hashiText1.text.toString())
         hashMap.put("tag2", binding.hashiText2.text.toString())
@@ -128,7 +134,7 @@ class writingPostActivity: AppCompatActivity() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:MM")
         hashMap.put("time", dateFormat.format(date))
 
-        reference?.child(auth?.uid!!)?.setValue(hashMap)?.addOnCompleteListener {
+        reference?.child(auth?.uid!!)?.child(binding.commentPost.text.toString())?.setValue(hashMap)?.addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "업로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -137,5 +143,18 @@ class writingPostActivity: AppCompatActivity() {
         Log.d("TAG", "hashMap: $hashMap")
         hashMap.clear()
         finish()
+    }
+
+    private fun getUserInfo(ref: DatabaseReference, listener: OnGetDataListener) {
+        listener.onStart()
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listener.onSuccess(snapshot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listener.onFailure()
+            }
+        })
     }
 }
