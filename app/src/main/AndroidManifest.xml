@@ -30,22 +30,22 @@
             android:exported="false" />
         <activity
             android:name=".function.writingPostActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".bottomNavigation.MainFragment"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
             android:name=".MainPageActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustNothing" />
+            android:exported="false" />
         <activity
             android:name=".login.NewUserActivity"
             android:exported="false" />
         <activity
             android:name=".login.FindPasswordActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"
