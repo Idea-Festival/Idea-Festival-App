@@ -28,15 +28,35 @@
         app:layout_constraintStart_toEndOf="@+id/post_user"
         app:layout_constraintTop_toTopOf="@+id/post_user" />
 
-    <ImageView
+    <TextView
+        android:id="@+id/post_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24ssurround"
+        android:text="time"
+        android:textSize="10sp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_user_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post_user_text" />
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/post_main_img"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/post_img"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/post_main_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/post_img" />
+
+    </androidx.cardview.widget.CardView>
 
     <View
         android:id="@+id/line"
@@ -109,7 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <TextView
-        android:id="@+id/hasi1"
+        android:id="@+id/hasi1_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -120,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@+id/post_str" />
 
     <TextView
-        android:id="@+id/hasi2"
+        android:id="@+id/hasi2_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -128,11 +148,11 @@
         android:text="#맨투맨"
         android:layout_marginStart="15dp"
         android:textSize="15dp"
-        app:layout_constraintStart_toEndOf="@+id/hasi1"
+        app:layout_constraintStart_toEndOf="@+id/hasi1_text"
         app:layout_constraintTop_toBottomOf="@+id/post_str" />
 
     <TextView
-        android:id="@+id/hasi3"
+        android:id="@+id/hasi3_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -140,7 +160,7 @@
         android:text="#꾸안꾸"
         android:layout_marginStart="15dp"
         android:textSize="15dp"
-        app:layout_constraintStart_toEndOf="@+id/hasi2"
+        app:layout_constraintStart_toEndOf="@+id/hasi2_text"
         app:layout_constraintTop_toBottomOf="@+id/post_str" />
 
     <View
@@ -150,6 +170,6 @@
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hasi1" />
+        app:layout_constraintTop_toBottomOf="@+id/hasi1_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

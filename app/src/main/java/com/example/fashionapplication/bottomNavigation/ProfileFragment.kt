@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.fragment_profile.*
+
 
 class ProfileFragment : Fragment() {
 
@@ -115,7 +115,7 @@ class ProfileFragment : Fragment() {
                 }
                 val user = snapshot.getValue(User::class.java)
                 if (snapshot.exists()) {
-                    Glide.with(context!!).load(user?.imageurl).into(main_img)
+                    Glide.with(context!!).load(user?.imageurl).into(binding.mainImg)
                     binding.userName.text = user?.username
                 }
             }
