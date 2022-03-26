@@ -5,7 +5,7 @@ data class PostDto(
     var imageUrl: String? = null,    // 이미지를 관리
     var uid: String? = null,     // 어느 유저가 올렸는지 관리
     var userId:String? = null,   // 올린 유저의 이미지 관리
-    var timestamp: Long? = null,    // 몇 시에 올렸는지 관리
+    var timestamp: String? = null,    // 몇 시에 올렸는지 관리
     var favoriteCount: Int = 0,  // 몇개의 좋아요를 받았는지 관리
     var tag1: String? = null,   // 해시태그들
     var tag2: String? = null,

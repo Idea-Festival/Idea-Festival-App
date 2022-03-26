@@ -14,11 +14,11 @@ import com.example.fashionapplication.data.PostDto
 
 class PostAdapter(private var postDtoList:List<PostDto>, private var uidList: ArrayList<String>, private var context: Context)
     : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.post_recyclerview_item, parent, false)
         return ViewHolder(view)
     }
-    override fun onBindViewHolder(holder: PostAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tag1.text =  postDtoList.get(position).tag1
         holder.tag2.text =  postDtoList.get(position).tag2
         holder.tag3.text =  postDtoList.get(position).tag3
@@ -26,7 +26,7 @@ class PostAdapter(private var postDtoList:List<PostDto>, private var uidList: Ar
 
         context = holder.itemView.context
         val url: String? = postDtoList.get(position).imageUrl
-        Glide.with(context).load(url).into(holder.uploadImg)
+        Glide.with(context).load(url).centerCrop().into(holder.uploadImg)
     }
     override fun getItemCount(): Int {
         return postDtoList.size

@@ -65,11 +65,11 @@ class NewUserActivity : AppCompatActivity() {
                         Toast.makeText(this@NewUserActivity, "비밀번호는 6자리 이상이어야 합니다..", Toast.LENGTH_SHORT).show()
                     }
 
-                    hashMap.put("id",userid)
-                    hashMap.put("username", name.lowercase(Locale.getDefault()))
-                    hashMap.put("email",email)
-                    hashMap.put("pw",pw)
-                    hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/pestival-d14d7.appspot.com/o/profile_img.png?alt=media&token=327b430d-9cb1-4151-9eee-2d4300cd9cf9")
+                    hashMap["id"] = userid
+                    hashMap["username"] = name.lowercase(Locale.getDefault())
+                    hashMap["email"] = email
+                    hashMap["pw"] = pw
+                    hashMap["imageurl"] = "https://firebasestorage.googleapis.com/v0/b/pestival-d14d7.appspot.com/o/profile_img.png?alt=media&token=327b430d-9cb1-4151-9eee-2d4300cd9cf9"
 
                     reference.setValue(hashMap).addOnCompleteListener(object: OnCompleteListener<Void> {
                         override fun onComplete(p0: Task<Void>) {

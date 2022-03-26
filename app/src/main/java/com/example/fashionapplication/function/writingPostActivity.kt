@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.fashionapplication.data.OnGetDataListener
+import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.databinding.WritePostingBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.theartofdev.edmodo.cropper.CropImage
 import java.text.SimpleDateFormat
@@ -20,10 +21,11 @@ class writingPostActivity: AppCompatActivity() {
     var PICK_IMAGE_FROM_ALBUM = 0
     var storage:FirebaseStorage? = null
     var photoUri: Uri? = null
+    lateinit var fireStore: FirebaseFirestore
     var auth: FirebaseAuth? = null
     var reference: DatabaseReference? = null
     private lateinit var binding: WritePostingBinding
-    private val hashMap: HashMap<String, Any> = HashMap()
+    private val postDto = PostDto()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +38,10 @@ class writingPostActivity: AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         reference = FirebaseDatabase.getInstance().reference.child("Posts")
 
+        fireStore = FirebaseFirestore.getInstance()
+
         // image crop, open album
-        var photoPickerIntent = Intent(Intent.ACTION_PICK)
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
         photoPickerIntent.putExtra("crop", true)
         startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
@@ -82,79 +86,33 @@ class writingPostActivity: AppCompatActivity() {
 
         // 업로드, 데이터베이스 추가
         storageRef?.putFile(photoUri!!)?.addOnSuccessListener {
-            storageRef.downloadUrl.addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                postDto.imageUrl = uri.toString()
                 getData()
             }
         }
     }
 
     private fun getData() {
-        // get user info
-        val userRef = FirebaseDatabase.getInstance().reference
-        getUserInfo(userRef.child("Users").child(auth?.uid.toString()).child("imageurl"), object : OnGetDataListener {
-            override fun onSuccess(dataSnapShot: DataSnapshot) {
-                reference?.child(auth?.uid.toString())?.child(binding.commentPost.text.toString())?.child("profile")?.setValue(dataSnapShot.getValue(String::class.java).toString())
-                Log.d("TAG", "onSuccess getUserInfo: $dataSnapShot")
-            }
-
-            override fun onStart() {
-                Log.d("TAG", "onStart: Started")
-            }
-
-            override fun onFailure() {
-                Log.d("TAG", "onFailure: Fail")
-            }
-        })
-
-        getUserInfo(userRef.child("Users").child(auth?.uid.toString()).child("username"), object : OnGetDataListener {
-            override fun onSuccess(dataSnapShot: DataSnapshot) {
-                reference?.child(auth?.uid.toString())?.child(binding.commentPost.text.toString())?.child("username")?.setValue(dataSnapShot.getValue(String::class.java).toString())
-                Log.d("TAG", "onSuccess getUserInfo: ${dataSnapShot.getValue(String::class.java).toString()}")
-            }
-
-            override fun onStart() {
-                Log.d("TAG", "onStart: Started")
-            }
-
-            override fun onFailure() {
-                Log.d("TAG", "onFailure: Fail")
-            }
-        })
-
-
         // data 담기
-        hashMap.put("explain", binding.commentPost.text.toString())
-        hashMap.put("tag1", binding.hashiText1.text.toString())
-        hashMap.put("tag2", binding.hashiText2.text.toString())
-        hashMap.put("tag3", binding.hashiText3.text.toString())
-        hashMap.put("like", "0")
+        postDto.explain = binding.commentPost.text.toString()
+        postDto.uid = auth?.currentUser?.uid
+        postDto.userId = auth?.currentUser?.email
+        postDto.tag1 = binding.hashiText1.text.toString()
+        postDto.tag2 = binding.hashiText2.text.toString()
+        postDto.tag3 = binding.hashiText3.text.toString()
 
         val time = System.currentTimeMillis()
         val date = Date(time)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:MM")
-        hashMap.put("time", dateFormat.format(date))
+        postDto.timestamp = dateFormat.format(date)
 
-        reference?.child(auth?.uid!!)?.child(binding.commentPost.text.toString())?.setValue(hashMap)?.addOnCompleteListener {
+        fireStore.collection("posts").document().set(postDto).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "업로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
-
-        Log.d("TAG", "hashMap: $hashMap")
-        hashMap.clear()
-        finish()
     }
 
-    private fun getUserInfo(ref: DatabaseReference, listener: OnGetDataListener) {
-        listener.onStart()
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                listener.onSuccess(snapshot)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                listener.onFailure()
-            }
-        })
-    }
 }
