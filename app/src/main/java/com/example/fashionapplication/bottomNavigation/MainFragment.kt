@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.fashionapplication.Adapter.MainFragmentRecyclerAdapter
+import com.example.fashionapplication.Adapter.MainPageFragmentRecyclerAdapter
 import com.example.fashionapplication.databinding.FragmentMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +25,7 @@ class MainFragment : Fragment() {
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        binding.postRecyclerview.adapter = MainFragmentRecyclerAdapter()
+        binding.postRecyclerview.adapter = MainPageFragmentRecyclerAdapter()
         binding.postRecyclerview.layoutManager = LinearLayoutManager(context)
 
         return binding.root
