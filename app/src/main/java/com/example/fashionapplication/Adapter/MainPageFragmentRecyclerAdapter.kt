@@ -10,8 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.fashionapplication.R
 import com.example.fashionapplication.data.PostDto
 import com.google.firebase.firestore.FirebaseFirestore
+import de.hdodenhof.circleimageview.CircleImageView
 
-class MainFragmentRecyclerAdapter: RecyclerView.Adapter<MainFragmentRecyclerAdapter.CustomViewHolder>() {
+class MainPageFragmentRecyclerAdapter: RecyclerView.Adapter<MainPageFragmentRecyclerAdapter.CustomViewHolder>() {
     var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     var postDto: ArrayList<PostDto> = arrayListOf()     // post를 담을 arraylisy
@@ -30,18 +31,19 @@ class MainFragmentRecyclerAdapter: RecyclerView.Adapter<MainFragmentRecyclerAdap
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainFragmentRecyclerAdapter.CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainPageFragmentRecyclerAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.post_recyclerview_item, parent, false)
         return CustomViewHolder(view)
     }
 
     // view 매핑
-    override fun onBindViewHolder(holder: MainFragmentRecyclerAdapter.CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainPageFragmentRecyclerAdapter.CustomViewHolder, position: Int) {
         holder.postUserText.text = postDto[position].userId
         Glide.with(holder.itemView.context).load(postDto[position].imageUrl).centerCrop().into(holder.postMainImage)
         holder.postExplain.text = postDto[position].explain
         holder.postTimeStamp.text = postDto[position].timestamp
         holder.likeCount.text = postDto[position].favoriteCount.toString()
+        Glide.with(holder.itemView.context).load(postDto[position].profileImg).centerCrop().into(holder.postUser)
         holder.tag1.text = postDto[position].tag1.toString()
         holder.tag2.text = postDto[position].tag2.toString()
         holder.tag3.text = postDto[position].tag3.toString()
@@ -56,6 +58,7 @@ class MainFragmentRecyclerAdapter: RecyclerView.Adapter<MainFragmentRecyclerAdap
         val postMainImage = itemView.findViewById<ImageView>(R.id.post_main_image)
         val postExplain = itemView.findViewById<TextView>(R.id.post_str)
         val postTimeStamp = itemView.findViewById<TextView>(R.id.post_timestamp)
+        val postUser = itemView.findViewById<CircleImageView>(R.id.post_user)
         val likeCount = itemView.findViewById<TextView>(R.id.like_count)
         val tag1 = itemView.findViewById<TextView>(R.id.hasi1_text)
         val tag2 = itemView.findViewById<TextView>(R.id.hasi2_text)

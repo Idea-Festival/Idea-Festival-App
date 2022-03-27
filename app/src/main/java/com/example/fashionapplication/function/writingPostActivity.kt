@@ -85,6 +85,11 @@ class writingPostActivity: AppCompatActivity() {
         val storageRef = storage?.reference?.child("images")?.child(imageFileName)
 
         // 업로드, 데이터베이스 추가
+        storage?.reference?.child("profileImage")?.child(auth?.uid!! + ".png")?.downloadUrl
+            ?.addOnSuccessListener { imageUri ->
+                postDto.profileImg = imageUri.toString()
+            }
+
         storageRef?.putFile(photoUri!!)?.addOnSuccessListener {
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 postDto.imageUrl = uri.toString()
