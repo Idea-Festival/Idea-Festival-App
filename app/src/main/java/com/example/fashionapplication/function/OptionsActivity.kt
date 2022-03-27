@@ -5,56 +5,60 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
+import com.example.fashionapplication.MainActivity
 import com.example.fashionapplication.R
+import com.example.fashionapplication.databinding.ActivityOptionsBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_options.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.write_posting.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class OptionsActivity : AppCompatActivity() {
 
     private val PICK_IMAGE_FOR_ALBUM = 0
-    var firebaseuser: FirebaseUser? = null
     private lateinit var storage : FirebaseStorage
     var uriPhoto : Uri? = null
     private val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
+    lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityOptionsBinding
 
-    lateinit var profileImg: CircleImageView
+    var profileImg: CircleImageView = binding.optionProfileImg
     lateinit var profileid: String
-    lateinit var username: TextView
-    lateinit var logout: TextView
-    lateinit var taltoe: TextView
+    var username: TextView = binding.optionUsername
+    var logout: TextView = binding.optionLogout
+    var taltoe: TextView = binding.optionHoewontaltoe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_options)
 
-        profileImg = findViewById(R.id.option_profile_img)
-        username = findViewById(R.id.option_username)
-        storage = FirebaseStorage.getInstance()
-        firebaseuser = FirebaseAuth.getInstance().currentUser
+        binding = ActivityOptionsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val prefs: SharedPreferences = this.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
         profileid = prefs.getString("profileid", "none").toString()
         userInfo()
 
-        taltoe = findViewById(R.id.option_hoewontaltoe)
-        logout = findViewById(R.id.option_logout)
-
-        val changeProfile = findViewById<LinearLayout>(R.id.option_change_profile)
+        val changeProfile = binding.optionChangeProfile
         changeProfile.setOnClickListener {
             changeProfile()
+        }
+
+        logout.setOnClickListener {
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        // TODO :: firebase 회원 삭제하기
+        taltoe.setOnClickListener {
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
@@ -83,7 +87,7 @@ class OptionsActivity : AppCompatActivity() {
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(com.example.fashionapplication.data.User::class.java)
-                Glide.with(this@OptionsActivity).load(user?.imageurl).into(option_profile_img)
+                Glide.with(this@OptionsActivity).load(user?.imageurl).into(binding.optionProfileImg)
                 username.text = user?.username
             }
             override fun onCancelled(error: DatabaseError) {}
