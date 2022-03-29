@@ -28,10 +28,8 @@
         <activity
             android:name=".function.CommentActivity"
             android:exported="false" />
-        <activity
-            android:name=".function.writingPostActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".function.writingPostActivity"
+            android:exported="true"/>
         <activity
             android:name=".bottomNavigation.MainFragment"
             android:exported="false"
