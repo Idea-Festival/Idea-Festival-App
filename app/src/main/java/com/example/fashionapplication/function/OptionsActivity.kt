@@ -53,6 +53,7 @@ class OptionsActivity : AppCompatActivity() {
         logout.setOnClickListener {
             finish()
             startActivity(Intent(this, MainActivity::class.java))
+            auth.signOut()  // 로그아웃 코드
         }
 
         // TODO :: firebase 회원 삭제하기

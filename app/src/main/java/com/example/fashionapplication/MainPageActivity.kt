@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.example.fashionapplication.bottomNavigation.ProfileFragment
 import com.example.fashionapplication.databinding.ActivityMainPageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
