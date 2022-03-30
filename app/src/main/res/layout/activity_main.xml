@@ -109,63 +109,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_user_btn" />
 
-    <View
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_button"
         android:layout_width="218dp"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="130dp"
+        android:text="로그인"
+        android:fontFamily="@font/cafe24ssurround"
         android:background="@drawable/rectangle_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-    <TextView
-        android:id="@+id/login"
-        android:layout_width="42dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="로그인"
-        android:fontFamily="@font/cafe24ssurround"
-        android:textColor="#000000"
-        android:lineHeight="22sp"
-        android:textAppearance="@style/login"
-        app:layout_constraintBottom_toBottomOf="@+id/login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/login_button" />
-
-    <View
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/new_user_btn"
         android:layout_width="218dp"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
+        android:text="회원가입"
+        android:textColor="@color/white"
+        android:fontFamily="@font/cafe24ssurround"
         android:background="@drawable/rectangle_22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
-
-    <TextView
-        android:id="@+id/new_user"
-        android:layout_width="50dp"
-        android:layout_height="13dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:fontFamily="@font/cafe24ssurround"
-        android:textColor="#ffffff"
-        android:lineHeight="13sp"
-        android:text="회원가입"
-        android:textAppearance="@style/some_id"
-        app:layout_constraintBottom_toBottomOf="@+id/new_user_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_user_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
