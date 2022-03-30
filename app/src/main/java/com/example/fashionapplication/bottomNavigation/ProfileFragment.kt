@@ -10,12 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.fashionapplication.Adapter.MyPhotoAdapter
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.data.User
 import com.example.fashionapplication.databinding.FragmentProfileBinding
@@ -24,6 +26,7 @@ import com.example.fashionapplication.function.writingPostActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
 class ProfileFragment : Fragment() {
@@ -31,10 +34,11 @@ class ProfileFragment : Fragment() {
     private lateinit var firebaseUser: FirebaseUser
     private var profileid: String? = null
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var adapter: MyPhotoAdapter
+    private lateinit var adapter: ProfileFragmentRecyclerAdapter
     private lateinit var postList: ArrayList<PostDto>
     private lateinit var auth: FirebaseAuth
     val pickImageFromAlbum = 0
+    private lateinit var currentUserUid: String // 자신의 계정인지 아닌지 구분하는 변수
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,20 +48,28 @@ class ProfileFragment : Fragment() {
         val pres: SharedPreferences = requireContext().getSharedPreferences("PRES", MODE_PRIVATE)
         profileid = pres.getString("profileid", "none")
         auth = FirebaseAuth.getInstance()
+        currentUserUid = auth.currentUser!!.uid
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-
-
         binding.postingRecyclerview.setHasFixedSize(true)
-        val layoutmanager: LinearLayoutManager = GridLayoutManager(context, 3)
+        val layoutmanager: LinearLayoutManager = GridLayoutManager(activity, 3)
         binding.postingRecyclerview.layoutManager = layoutmanager
         postList = arrayListOf()
-        adapter = MyPhotoAdapter(context, postList)
+        adapter = ProfileFragmentRecyclerAdapter()
         binding.postingRecyclerview.adapter = adapter
+
+
 
         userInfo()
         user()
         uploadProfileImage()    // 이미지 업로드
+
+        // 자신의 프로필인 경우
+        if (auth.uid == currentUserUid) {
+            binding.profileFollowBtn.visibility = View.GONE
+        } else {    // 자신의 프로필이 아닌 경우
+            binding.profileFollowBtn.visibility = View.VISIBLE
+        }
 
         binding.mainImg.setOnClickListener {
             val photoPickerIntent = Intent(Intent.ACTION_PICK)
@@ -90,6 +102,45 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    inner class ProfileFragmentRecyclerAdapter: RecyclerView.Adapter<ProfileFragmentRecyclerAdapter.ViewHolder>() {
+
+        private var postDto = arrayListOf<PostDto>()
+        private val uid = arguments?.getString("uid")
+        init {
+            val fireStore = FirebaseStorage.getInstance().reference
+//            fireStore.child("images").child(auth.uid!!).addSnapshotListener { querySnapshot, error ->
+//                if (querySnapshot == null) return@addSnapshotListener
+//
+//                for (snapshot in querySnapshot.documents) {
+//                    postDto.add(snapshot.toObject(PostDto::class.java)!!)
+//                }
+//
+//                binding.postCount.text = postDto.size.toString() + "개"
+//                notifyDataSetChanged()
+//            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            var width = resources.displayMetrics.widthPixels/3
+            var imageView = ImageView(parent.context)
+            imageView.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
+            return ViewHolder(imageView)
+        }
+
+        inner class ViewHolder(var imageView: ImageView): RecyclerView.ViewHolder(imageView) {
+
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val imageView = (position as ViewHolder).imageView
+            Glide.with(position.itemView.context).load(postDto[position].imageUrl).centerCrop().into(imageView)
+        }
+
+        override fun getItemCount(): Int {
+            return postDto.size
+        }
     }
 
     private fun user() {

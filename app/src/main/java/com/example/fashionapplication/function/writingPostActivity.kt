@@ -83,7 +83,7 @@ class writingPostActivity: AppCompatActivity() {
         // file 형식 만들기
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "IMAGE_${timestamp}_.png"
-        val storageRef = storage?.reference?.child("images")?.child(imageFileName)
+        val storageRef = storage?.reference?.child("images")?.child(auth?.uid!!)?.child(imageFileName)
 
         // 업로드, 데이터베이스 추가
         storage?.reference?.child("profileImage")?.child(auth?.uid!! + ".png")?.downloadUrl
