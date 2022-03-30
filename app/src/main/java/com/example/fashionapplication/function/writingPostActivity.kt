@@ -6,8 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.fashionapplication.MainPageActivity
 import com.example.fashionapplication.data.PostDto
-import com.example.fashionapplication.databinding.WritePostingBinding
+import com.example.fashionapplication.databinding.ActivityWritingPostingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -24,13 +25,13 @@ class writingPostActivity: AppCompatActivity() {
     lateinit var fireStore: FirebaseFirestore
     var auth: FirebaseAuth? = null
     var reference: DatabaseReference? = null
-    private lateinit var binding: WritePostingBinding
+    private lateinit var binding: ActivityWritingPostingBinding
     private val postDto = PostDto()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = WritePostingBinding.inflate(layoutInflater)
+        binding = ActivityWritingPostingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 초기화
@@ -82,7 +83,7 @@ class writingPostActivity: AppCompatActivity() {
         // file 형식 만들기
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "IMAGE_${timestamp}_.png"
-        val storageRef = storage?.reference?.child("images")?.child(imageFileName)
+        val storageRef = storage?.reference?.child("images")?.child(auth?.uid!!)?.child(imageFileName)
 
         // 업로드, 데이터베이스 추가
         storage?.reference?.child("profileImage")?.child(auth?.uid!! + ".png")?.downloadUrl
@@ -116,6 +117,7 @@ class writingPostActivity: AppCompatActivity() {
             if (it.isSuccessful) {
                 Toast.makeText(this, "업로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 finish()
+                startActivity(Intent(this, MainPageActivity::class.java))
             }
         }
     }
