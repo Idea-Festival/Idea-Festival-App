@@ -32,6 +32,7 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/drawable/ver2.xml" value="0.265625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/font/custom_font_family.xml" value="0.2796875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/a.xml" value="0.2" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_blog.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_comment.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_comment_star.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/activity_join.xml" value="0.24947916666666667" />
@@ -49,6 +50,7 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/fragment_writing_post.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/post_recyclerview_item.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/posting_photo_recycler_item.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/profile_fragment_recycler_item.xml" value="0.4698275862068966" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/search_recyclerview_item.xml" value="0.536" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/toolbar.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/user/AndroidStudioProjects/FashionApplication/app/src/main/res/layout/write_posting.xml" value="0.264" />

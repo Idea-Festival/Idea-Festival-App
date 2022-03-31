@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.fashionapplication">
+    package="com.example.fashionapplication" >
     <!-- 인터넷 커미션 -->
     <!-- firebase 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +15,7 @@
         android:roundIcon="@drawable/rectangle_1"
         android:supportsRtl="true"
         android:theme="@style/Theme.FashionApplication"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
         <activity
             android:name=".function.CommentStarActivity"
             android:exported="false" />
@@ -28,8 +28,9 @@
         <activity
             android:name=".function.CommentActivity"
             android:exported="false" />
-        <activity android:name=".function.writingPostActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".function.writingPostActivity"
+            android:exported="true" />
         <activity
             android:name=".bottomNavigation.MainFragment"
             android:exported="false"
@@ -47,7 +48,7 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:icon="@drawable/logo">
+            android:icon="@drawable/logo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

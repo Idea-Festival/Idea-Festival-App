@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.fashionapplication.R
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.data.User
 import com.example.fashionapplication.databinding.FragmentProfileBinding
@@ -107,35 +108,34 @@ class ProfileFragment : Fragment() {
     inner class ProfileFragmentRecyclerAdapter: RecyclerView.Adapter<ProfileFragmentRecyclerAdapter.ViewHolder>() {
 
         private var postDto = arrayListOf<PostDto>()
-        private val uid = arguments?.getString("uid")
         init {
-            val fireStore = FirebaseStorage.getInstance().reference
-//            fireStore.child("images").child(auth.uid!!).addSnapshotListener { querySnapshot, error ->
-//                if (querySnapshot == null) return@addSnapshotListener
-//
-//                for (snapshot in querySnapshot.documents) {
-//                    postDto.add(snapshot.toObject(PostDto::class.java)!!)
-//                }
-//
-//                binding.postCount.text = postDto.size.toString() + "개"
-//                notifyDataSetChanged()
-//            }
+            val fireStore = FirebaseFirestore.getInstance()
+            fireStore.collection("posts").get().addOnSuccessListener { result ->
+                for (snapshot in result) {
+                    if (snapshot["uid"].toString() == auth.uid) {
+                        postDto.add(snapshot.toObject(PostDto::class.java))
+                    }
+                }
+
+                binding.postCount.text = postDto.size.toString() + "개"
+                notifyDataSetChanged()
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            var width = resources.displayMetrics.widthPixels/3
-            var imageView = ImageView(parent.context)
-            imageView.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
-            return ViewHolder(imageView)
-        }
-
-        inner class ViewHolder(var imageView: ImageView): RecyclerView.ViewHolder(imageView) {
-
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.profile_fragment_recycler_item, parent, false)
+            return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val imageView = (position as ViewHolder).imageView
-            Glide.with(position.itemView.context).load(postDto[position].imageUrl).centerCrop().into(imageView)
+            val width = resources.displayMetrics.widthPixels / 3
+            holder.profileImage.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
+            Glide.with(holder.itemView.context).load(postDto[position].imageUrl).into(holder.profileImage)
+            binding.postCount.text = postDto.size.toString() + "개"
+        }
+
+        inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+            val profileImage = itemView.findViewById<ImageView>(R.id.post_image_profileFragment)
         }
 
         override fun getItemCount(): Int {
