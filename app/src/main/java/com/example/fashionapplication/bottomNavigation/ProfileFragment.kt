@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fashionapplication.R
+import com.example.fashionapplication.data.FollowDto
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.data.User
 import com.example.fashionapplication.databinding.FragmentProfileBinding
@@ -70,6 +71,10 @@ class ProfileFragment : Fragment() {
             binding.profileFollowBtn.visibility = View.GONE
         } else {    // 자신의 프로필이 아닌 경우
             binding.profileFollowBtn.visibility = View.VISIBLE
+
+            binding.profileFollowBtn.setOnClickListener {
+                requestFollow()
+            }
         }
 
         binding.mainImg.setOnClickListener {
@@ -101,6 +106,7 @@ class ProfileFragment : Fragment() {
         binding.profileSetting.setOnClickListener {
             startActivity(Intent(context, OptionsActivity::class.java))
         }
+        getFollowerAndGetFollowing()
 
         return binding.root
     }
@@ -140,6 +146,75 @@ class ProfileFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return postDto.size
+        }
+    }
+
+    val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private fun requestFollow() {
+        val tsDocFollowing = fireStore.collection("posts").document(currentUserUid)
+        fireStore.runTransaction { transaction ->
+            var followDto: FollowDto? = transaction.get(tsDocFollowing).toObject(FollowDto::class.java)
+            if (followDto == null) {
+                followDto = FollowDto()
+                followDto.followingCount = 1
+                followDto.followers[auth.uid!!] = true
+
+                transaction.set(tsDocFollowing, followDto)
+                return@runTransaction
+            }
+
+            if (followDto.followings.containsKey(auth.uid)) {   // follow 한 상태
+                followDto.followingCount -= 1
+                followDto.followers.remove(auth.uid)
+            } else {    // 안한 상태
+                followDto.followingCount += 1
+                followDto.followers[auth.uid!!] = true
+            }
+            transaction.set(tsDocFollowing, followDto)
+            return@runTransaction
+        }
+
+        val tsDocFollower = fireStore.collection("posts").document(auth.uid!!)
+        fireStore.runTransaction { transaction ->
+            var followDto = transaction.get(tsDocFollower).toObject(FollowDto::class.java)
+            if (followDto == null) {
+                followDto = FollowDto()
+                followDto!!.followerCount = 1
+                followDto!!.followers[currentUserUid] = true
+
+                transaction.set(tsDocFollower, followDto!!)
+                return@runTransaction
+            }
+
+            if (followDto!!.followers.containsKey(currentUserUid)) {    // 상대의 계정에 내가 팔로우된 경우
+                followDto!!.followerCount -= 1
+                followDto!!.followers.remove(currentUserUid)
+            } else {    // 안한 경우
+                followDto!!.followerCount += 1
+                followDto!!.followers[currentUserUid] = true
+            }
+            transaction.set(tsDocFollower, followDto!!)
+            return@runTransaction
+        }
+    }
+
+    private fun getFollowerAndGetFollowing() {
+        fireStore.collection("posts").document(auth.uid!!).addSnapshotListener { documentSnapshot, error ->
+            if (documentSnapshot == null) return@addSnapshotListener
+
+            val followDto = documentSnapshot.toObject(FollowDto::class.java)
+            if (followDto?.followerCount != null) {
+                binding.followerCount.text = followDto.followerCount.toString()
+
+                if (followDto.followers.containsKey(currentUserUid)) {
+                    binding.profileFollowBtn.text = "unFollow"
+                } else {
+                    if (auth.uid != currentUserUid) {
+                        binding.profileFollowBtn.text = "Follow"
+                        binding.profileFollowBtn.background.colorFilter = null
+                    }
+                }
+            }
         }
     }
 
