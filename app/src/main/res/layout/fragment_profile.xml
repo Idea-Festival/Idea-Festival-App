@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frame_lay"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".bottomNavigation.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -178,4 +179,4 @@
             app:layout_constraintTop_toBottomOf="@+id/line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</FrameLayout>

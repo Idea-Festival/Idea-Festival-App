@@ -1,15 +1,18 @@
 package com.example.fashionapplication.bottomNavigation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.fashionapplication.Adapter.click.OnItemClickListener
 import com.example.fashionapplication.R
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.databinding.FragmentMainBinding
@@ -28,11 +31,26 @@ class MainFragment : Fragment() {
     ): View {
         fireStore = FirebaseFirestore.getInstance()
         uid = FirebaseAuth.getInstance().currentUser?.uid
+        val adapter = MainPageFragmentRecyclerAdapter()
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        binding.postRecyclerview.adapter = MainPageFragmentRecyclerAdapter()
+        binding.postRecyclerview.adapter = adapter
         binding.postRecyclerview.layoutManager = LinearLayoutManager(context)
+
+        adapter.itemClick = object: OnItemClickListener {
+            override fun onItemClick(view: View, data: PostDto, position: Int) {
+                val fragment = ProfileFragment()
+                val bundle = Bundle()
+                val postDto = PostDto()
+
+                bundle.putString("destinationUid", postDto.uid)
+                bundle.putString("userId", postDto.userId)
+
+                fragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+            }
+        }
 
         return binding.root
     }
@@ -62,6 +80,8 @@ class MainFragment : Fragment() {
             return CustomViewHolder(view)
         }
 
+        var itemClick: OnItemClickListener? = null
+
         // view 매핑
         override fun onBindViewHolder(holder: MainPageFragmentRecyclerAdapter.CustomViewHolder, position: Int) {
             holder.postUserText.text = postDto[position].userId
@@ -86,18 +106,7 @@ class MainFragment : Fragment() {
             } else {    // like를 클릭하지 않은 경우
                 holder.like.setImageResource(R.drawable.hanger_unselected)
             }
-
-            holder.postUser.setOnClickListener {
-                val profileFragment = ProfileFragment()
-                val bundle = Bundle()
-
-                bundle.putString("destinationUid", postDto[position].uid)
-                bundle.putString("userId", postDto[position].userId)
-                profileFragment.arguments = bundle
-
-                activity?.supportFragmentManager?.beginTransaction()?.
-                replace(R.id.post_recyclerview, profileFragment)?.commit()
-            }
+            holder.bind()
         }
 
         override fun getItemCount(): Int {
@@ -115,6 +124,16 @@ class MainFragment : Fragment() {
             val tag2 = itemView.findViewById<TextView>(R.id.hasi2_text)
             val tag3 = itemView.findViewById<TextView>(R.id.hasi3_text)
             val like = itemView.findViewById<ImageView>(R.id.like)
+
+            fun bind() {
+                val pos = adapterPosition
+
+                if (pos != RecyclerView.NO_POSITION) {
+                    itemView.setOnClickListener {
+                        itemClick?.onItemClick(itemView, postDto[pos], pos)
+                    }
+                }
+            }
         }
 
         fun favoriteEvent(position: Int) {
