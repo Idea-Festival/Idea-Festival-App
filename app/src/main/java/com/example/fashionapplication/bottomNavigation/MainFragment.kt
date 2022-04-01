@@ -1,14 +1,14 @@
 package com.example.fashionapplication.bottomNavigation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -40,7 +40,15 @@ class MainFragment : Fragment() {
 
         adapter.itemClick = object: OnItemClickListener {
             override fun onItemClick(view: View, data: PostDto, position: Int) {
-                Toast.makeText(context, "tlqkf", Toast.LENGTH_SHORT).show()
+                val fragment = ProfileFragment()
+                val bundle = Bundle()
+                val postDto = PostDto()
+
+                bundle.putString("destinationUid", postDto.uid)
+                bundle.putString("userId", postDto.userId)
+
+                fragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
             }
         }
 
@@ -91,17 +99,6 @@ class MainFragment : Fragment() {
                 favoriteEvent(position)
             }
 
-            /*holder.postUser.setOnClickListener {
-                val fragment = ProfileFragment()
-                val bundle = Bundle()
-
-                bundle.putString("uid", postDto[position].uid)
-                bundle.putString("userId", postDto[position].userId)
-
-                fragment.arguments = bundle
-                Navigation.findNavController(binding.root).navigate(R.id.action_mainFragment_to_profileFragment)
-            }*/
-
             // like count, like image 이벤트
             // like를 클릭한 경우
             if (postDto[position].favorite.containsKey(uid)) {
@@ -109,20 +106,7 @@ class MainFragment : Fragment() {
             } else {    // like를 클릭하지 않은 경우
                 holder.like.setImageResource(R.drawable.hanger_unselected)
             }
-
-            holder.postUser.setOnClickListener {
-                val profileFragment = ProfileFragment()
-                val bundle = Bundle()
-
-                bundle.putString("destinationUid", postDto[position].uid)
-                bundle.putString("userId", postDto[position].userId)
-                profileFragment.arguments = bundle
-
-                activity?.supportFragmentManager?.beginTransaction()?.
-                replace(R.id.post_recyclerview, profileFragment)?.commit()
-
-                holder.bind()
-            }
+            holder.bind()
         }
 
         override fun getItemCount(): Int {

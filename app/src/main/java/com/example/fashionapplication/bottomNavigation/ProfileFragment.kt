@@ -60,8 +60,6 @@ class ProfileFragment : Fragment() {
         adapter = ProfileFragmentRecyclerAdapter()
         binding.postingRecyclerview.adapter = adapter
 
-
-
         userInfo()
         user()
         uploadProfileImage()    // 이미지 업로드
