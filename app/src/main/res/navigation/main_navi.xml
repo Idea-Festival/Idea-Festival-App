@@ -14,7 +14,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.fashionapplication.bottomNavigation.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_optionsActivity"
+            app:destination="@id/optionsActivity" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.fashionapplication.bottomNavigation.SearchFragment"
@@ -29,4 +33,9 @@
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+    <activity
+        android:id="@+id/optionsActivity"
+        android:name="com.example.fashionapplication.function.OptionsActivity"
+        android:label="activity_options"
+        tools:layout="@layout/activity_options" />
 </navigation>

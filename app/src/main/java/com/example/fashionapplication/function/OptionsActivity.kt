@@ -26,28 +26,32 @@ class OptionsActivity : AppCompatActivity() {
     private val PICK_IMAGE_FOR_ALBUM = 0
     private lateinit var storage : FirebaseStorage
     var uriPhoto : Uri? = null
-    private val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
+    private lateinit var reference: DatabaseReference
     lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityOptionsBinding
+//    lateinit var profileid: String
+    lateinit var profileImg: CircleImageView
+    lateinit var username: TextView
 
-    var profileImg: CircleImageView = binding.optionProfileImg
-    lateinit var profileid: String
-    var username: TextView = binding.optionUsername
-    var logout: TextView = binding.optionLogout
-    var taltoe: TextView = binding.optionHoewontaltoe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityOptionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val prefs: SharedPreferences = this.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
-        profileid = prefs.getString("profileid", "none").toString()
-        userInfo()
+        profileImg = binding.optionProfileImg
+        username = binding.optionUsername
+        val logout: TextView = binding.optionLogout
+        val taltoe: TextView = binding.optionHoewontaltoe
+
+        auth = FirebaseAuth.getInstance()
+        reference  = FirebaseDatabase.getInstance().getReference("Users").child(auth.uid!!)
+
+//        userInfo()
 
         val changeProfile = binding.optionChangeProfile
         changeProfile.setOnClickListener {
-            changeProfile()
+//            changeProfile()
         }
 
         logout.setOnClickListener {
@@ -83,17 +87,17 @@ class OptionsActivity : AppCompatActivity() {
         }
     }
 
-    private fun userInfo() {
-        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
-        reference.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(com.example.fashionapplication.data.User::class.java)
-                Glide.with(this@OptionsActivity).load(user?.imageurl).into(binding.optionProfileImg)
-                username.text = user?.username
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
+//    private fun userInfo() {
+//        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(profileid)
+//        reference.addValueEventListener(object: ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val user = snapshot.getValue(com.example.fashionapplication.data.User::class.java)
+//                Glide.with(this@OptionsActivity).load(user?.imageurl).into(binding.optionProfileImg)
+//                username.text = user?.username
+//            }
+//            override fun onCancelled(error: DatabaseError) {}
+//        })
+//    }
 
     private fun changeProfile() {
         reference.addValueEventListener(object: ValueEventListener {

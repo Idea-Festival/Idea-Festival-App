@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -102,7 +103,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.profileSetting.setOnClickListener {
-            startActivity(Intent(context, OptionsActivity::class.java))
+            Navigation.findNavController(binding.root).navigate(R.id.action_profileFragment_to_optionsActivity)
         }
         getFollowerAndGetFollowing()
 
