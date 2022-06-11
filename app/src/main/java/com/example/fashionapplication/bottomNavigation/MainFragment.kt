@@ -1,14 +1,12 @@
 package com.example.fashionapplication.bottomNavigation
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -99,12 +97,22 @@ class MainFragment : Fragment() {
                 favoriteEvent(position)
             }
 
+            holder.bookMark.setOnClickListener {
+                bookMarkEvent(position)
+            }
+
             // like count, like image 이벤트
             // like를 클릭한 경우
             if (postDto[position].favorite.containsKey(uid)) {
                 holder.like.setImageResource(R.drawable.hanger_selected)
             } else {    // like를 클릭하지 않은 경우
                 holder.like.setImageResource(R.drawable.hanger_unselected)
+            }
+
+            if (postDto[position].bookmark.containsKey(uid)) {
+                holder.bookMark.setImageResource(R.drawable.tag_selected)
+            } else {
+                holder.bookMark.setImageResource(R.drawable.tag_unselected)
             }
             holder.bind()
         }
@@ -124,6 +132,7 @@ class MainFragment : Fragment() {
             val tag2 = itemView.findViewById<TextView>(R.id.hasi2_text)
             val tag3 = itemView.findViewById<TextView>(R.id.hasi3_text)
             val like = itemView.findViewById<ImageView>(R.id.like)
+            val bookMark = itemView.findViewById<ImageView>(R.id.bookmark)
 
             fun bind() {
                 val pos = adapterPosition
@@ -136,7 +145,7 @@ class MainFragment : Fragment() {
             }
         }
 
-        fun favoriteEvent(position: Int) {
+        private fun favoriteEvent(position: Int) {
             val tsDoc = fireStore.collection("posts").document(postUidList[position])
             fireStore.runTransaction { transition ->
                 val postDto = transition.get(tsDoc).toObject(PostDto::class.java)
@@ -151,6 +160,21 @@ class MainFragment : Fragment() {
                 }
 
                 transition.set(tsDoc, postDto)
+            }
+        }
+
+        private fun bookMarkEvent(position: Int) {
+            val tsDoc = fireStore.collection("posts").document(postUidList[position])
+            fireStore.runTransaction {
+                val post = it.get(tsDoc).toObject(PostDto::class.java)
+
+                if (post!!.bookmark.containsKey(uid)) {
+                    post.bookmark.remove(uid)
+                } else {
+                    post.bookmark[uid!!] = true
+                }
+
+                it.set(tsDoc, post)
             }
         }
     }
