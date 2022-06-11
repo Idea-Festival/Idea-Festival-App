@@ -60,18 +60,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/btm_navi_item" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:defaultNavHost="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar"
-        app:navGraph="@navigation/main_navi" />
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

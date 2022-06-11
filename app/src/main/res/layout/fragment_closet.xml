@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/user_closet"
+            android:id="@+id/user_closet_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cafe24ssurround"
@@ -39,7 +39,7 @@
             android:layout_marginEnd="15dp"
             android:background="@drawable/post_img"
             app:layout_constraintBottom_toBottomOf="@+id/closet_title"
-            app:layout_constraintEnd_toStartOf="@+id/user_closet"
+            app:layout_constraintEnd_toStartOf="@+id/user_closet_text"
             app:layout_constraintTop_toTopOf="@+id/closet_title" />
 
         <androidx.recyclerview.widget.RecyclerView
