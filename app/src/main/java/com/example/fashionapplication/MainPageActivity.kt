@@ -1,16 +1,19 @@
 package com.example.fashionapplication
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.example.fashionapplication.bottomNavigation.ClosetFragment
+import com.example.fashionapplication.bottomNavigation.MainFragment
 import com.example.fashionapplication.bottomNavigation.ProfileFragment
+import com.example.fashionapplication.bottomNavigation.SearchFragment
 import com.example.fashionapplication.databinding.ActivityMainPageBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class MainPageActivity : AppCompatActivity() {
+class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainPageBinding
     private lateinit var auth: FirebaseAuth
@@ -21,14 +24,44 @@ class MainPageActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
 
+        binding.bottomNavi.setOnNavigationItemSelectedListener(this)
+        supportFragmentManager.beginTransaction().add(R.id.linear, MainFragment()).commitAllowingStateLoss()
+
         user()
-        setBtmNavi()
     }
 
-    private fun setBtmNavi() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavi.setupWithNavController(navController)
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.mainFragment -> {
+                supportFragmentManager.beginTransaction().replace(R.id.linear, MainFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("uid", intent.getStringExtra("userId"))
+                    }
+                }).commitAllowingStateLoss()
+                return true
+            }
+            R.id.closetFragment -> {
+                supportFragmentManager.beginTransaction().replace(R.id.linear, ClosetFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("uid", intent.getStringExtra("userId"))
+                    }
+                }).commitAllowingStateLoss()
+                return true
+            }
+            R.id.profileFragment -> {
+                supportFragmentManager.beginTransaction().replace(R.id.linear, ProfileFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("uid", intent.getStringExtra("userId"))
+                    }
+                }).commitAllowingStateLoss()
+                return true
+            }
+            R.id.searchFragment -> {
+                supportFragmentManager.beginTransaction().replace(R.id.linear, SearchFragment()).commitAllowingStateLoss()
+                return true
+            }
+        }
+        return false
     }
 
     private fun user() {

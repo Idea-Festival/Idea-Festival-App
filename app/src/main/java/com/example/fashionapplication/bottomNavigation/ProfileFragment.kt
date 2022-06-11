@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -300,16 +301,16 @@ class ProfileFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 uriPhoto = data?.data
                 binding.mainImg.setImageURI(uriPhoto)
-                funImageUpload()
+                funImageUpload(uriPhoto)
             }
         }
     }
 
-    private fun funImageUpload() {
+    private fun funImageUpload(image: Uri?) {
         val imageFileName = "${auth.uid}.png"
         val storageRef = FirebaseStorage.getInstance().reference.child("profileImage").child(imageFileName)
 
-        storageRef.putFile(uriPhoto!!).addOnSuccessListener {
+        storageRef.putFile(image!!).addOnSuccessListener {
             Toast.makeText(context, "사진이 업로드됨", Toast.LENGTH_SHORT).show()
         }
     }

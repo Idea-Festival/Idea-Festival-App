@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fashionapplication.MainPageActivity
@@ -44,7 +45,6 @@ class writingPostActivity: AppCompatActivity() {
         // image crop, open album
         val photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
-        photoPickerIntent.putExtra("crop", true)
         startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
 
         // upload
@@ -59,23 +59,13 @@ class writingPostActivity: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            PICK_IMAGE_FROM_ALBUM -> {
-                photoUri = data?.data
-                binding.uploadImg.setImageURI(photoUri)
-
-            }
-            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
-                val result = CropImage.getActivityResult(data)
-                if (requestCode == Activity.RESULT_OK) {
-                    binding.uploadImg.setImageBitmap(result.bitmap)
-                    binding.uploadImg.setImageURI(result.uri)
-                    photoUri = result.uri
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Toast.makeText(this, "문제가 발생했습니다, 다시 시도해 주세요.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else -> finish()
+        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
+            photoUri = data?.data
+            Log.d("SUCCESS", "onActivityResult photo uri: $photoUri")
+            binding.uploadImg.setImageURI(photoUri)
+        } else {
+            Log.d("FAIL", "onActivityResult: 문제가 발생함")
+            finish()
         }
     }
 
