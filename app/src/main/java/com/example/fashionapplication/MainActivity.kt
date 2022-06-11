@@ -3,6 +3,7 @@ package com.example.fashionapplication
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +45,9 @@ class MainActivity : AppCompatActivity() {
                     override fun onComplete(p0: Task<AuthResult>) {
                         if (p0.isSuccessful) {
                             Toast.makeText(this@MainActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@MainActivity, MainPageActivity::class.java))
+                            val intent = Intent(this@MainActivity, MainPageActivity::class.java)
+                                .putExtra("userId", auth.uid)
+                            startActivity(intent)
                             finish()
                         } else {
                             Toast.makeText(this@MainActivity, "이메일 또는 비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
