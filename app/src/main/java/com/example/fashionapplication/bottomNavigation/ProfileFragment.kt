@@ -138,6 +138,8 @@ class ProfileFragment : Fragment() {
             holder.profileImage.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
             Glide.with(holder.itemView.context).load(postDto[position].imageUrl).into(holder.profileImage)
             binding.postCount.text = postDto.size.toString() + "개"
+            holder.itemView.layoutParams.height = 400
+            holder.itemView.requestLayout()
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

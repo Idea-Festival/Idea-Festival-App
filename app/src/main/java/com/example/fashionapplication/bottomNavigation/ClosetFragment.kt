@@ -76,6 +76,8 @@ class ClosetFragment : Fragment() {
             Glide.with(holder.itemView.context)
                 .load(tempList[position].imageUrl)
                 .into(holder.imageView)
+            holder.itemView.layoutParams.height = 400
+            holder.itemView.requestLayout()
         }
 
         override fun getItemCount(): Int {
