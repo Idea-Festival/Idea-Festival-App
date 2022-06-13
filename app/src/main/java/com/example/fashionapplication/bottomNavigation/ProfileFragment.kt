@@ -53,18 +53,23 @@ class ProfileFragment : Fragment() {
         profileid = pres.getString("profileid", "none")
         auth = FirebaseAuth.getInstance()
         currentUserUid = auth.currentUser!!.uid
-
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        binding.postingRecyclerview.setHasFixedSize(true)
-        val layoutmanager: LinearLayoutManager = GridLayoutManager(activity, 3)
-        binding.postingRecyclerview.layoutManager = layoutmanager
-        postList = arrayListOf()
-        adapter = ProfileFragmentRecyclerAdapter()
-        binding.postingRecyclerview.adapter = adapter
 
-        userInfo()
-        user()
-        uploadProfileImage()    // 이미지 업로드
+        Log.d("SUCCESS", "onCreateView from main page activity get uid: ${arguments?.getString("uid")}")
+
+        if (arguments?.getString("destinationUid") != null) {   // 메인의 아이템 클릭으로 온 경우
+            if (arguments?.getString("destinationUid") == arguments?.getString("uid")) {
+                initRecyclerView()
+                userInfo()
+                user()
+                uploadProfileImage()
+            }
+        } else {
+            initRecyclerView()
+            userInfo()
+            user()
+            uploadProfileImage()    // 이미지 업로드
+        }
 
         // 자신의 프로필인 경우
         if (auth.uid == currentUserUid) {
@@ -109,6 +114,15 @@ class ProfileFragment : Fragment() {
         getFollowerAndGetFollowing()
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        binding.postingRecyclerview.setHasFixedSize(true)
+        val layoutmanager: LinearLayoutManager = GridLayoutManager(activity, 3)
+        binding.postingRecyclerview.layoutManager = layoutmanager
+        postList = arrayListOf()
+        adapter = ProfileFragmentRecyclerAdapter()
+        binding.postingRecyclerview.adapter = adapter
     }
 
     inner class ProfileFragmentRecyclerAdapter: RecyclerView.Adapter<ProfileFragmentRecyclerAdapter.ViewHolder>() {
@@ -287,10 +301,10 @@ class ProfileFragment : Fragment() {
             .getReference("Notifications").child(profileid!!)
 
         val hashMap:HashMap<String, Any> = HashMap()
-        hashMap.put("userid",firebaseUser.uid)
-        hashMap.put("text", "start follow")
-        hashMap.put("postid", "")
-        hashMap.put("ispost", false)
+        hashMap["userid"] = firebaseUser.uid
+        hashMap["text"] = "start follow"
+        hashMap["postid"] = ""
+        hashMap["ispost"] = false
 
         reference.push().setValue(hashMap)
     }

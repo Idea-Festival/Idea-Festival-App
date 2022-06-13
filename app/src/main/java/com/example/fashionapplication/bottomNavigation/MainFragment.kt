@@ -1,6 +1,7 @@
 package com.example.fashionapplication.bottomNavigation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,15 +39,13 @@ class MainFragment : Fragment() {
 
         adapter.itemClick = object: OnItemClickListener {
             override fun onItemClick(view: View, data: PostDto, position: Int) {
-                val fragment = ProfileFragment()
-                val bundle = Bundle()
-                val postDto = PostDto()
 
-                bundle.putString("destinationUid", postDto.uid)
-                bundle.putString("userId", postDto.userId)
-
-                fragment.arguments = bundle
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, ProfileFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("destinationUid", data.uid)
+                        putString("userId", data.userId)
+                    }
+                })?.commit()
             }
         }
 
