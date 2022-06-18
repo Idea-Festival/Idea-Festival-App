@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,12 +19,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.init
 import com.example.fashionapplication.R
 import com.example.fashionapplication.data.FollowDto
 import com.example.fashionapplication.data.PostDto
 import com.example.fashionapplication.data.User
 import com.example.fashionapplication.databinding.FragmentProfileBinding
-import com.example.fashionapplication.function.OptionsActivity
 import com.example.fashionapplication.function.writingPostActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -42,7 +41,7 @@ class ProfileFragment : Fragment() {
     private lateinit var postList: ArrayList<PostDto>
     private lateinit var auth: FirebaseAuth
     val pickImageFromAlbum = 0
-    private lateinit var currentUserUid: String // 자신의 계정인지 아닌지 구분하는 변수
+    private var currentUserUid: String? = null // 자신의 계정인지 아닌지 구분하는 변수
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,21 +51,32 @@ class ProfileFragment : Fragment() {
         val pres: SharedPreferences = requireContext().getSharedPreferences("PRES", MODE_PRIVATE)
         profileid = pres.getString("profileid", "none")
         auth = FirebaseAuth.getInstance()
-        currentUserUid = auth.currentUser!!.uid
+
+        currentUserUid = arguments?.getString("destinationUid")
+        if (currentUserUid == null) {
+            currentUserUid = auth.uid.toString()
+        }
+
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         Log.d("SUCCESS", "onCreateView from main page activity get uid: ${arguments?.getString("uid")}")
 
         if (arguments?.getString("destinationUid") != null) {   // 메인의 아이템 클릭으로 온 경우
-            if (arguments?.getString("destinationUid") == arguments?.getString("uid")) {
+            if (arguments?.getString("destinationUid") == auth.uid) {
+                Log.d("SUCCESS", "onCreateView profile id: $profileid")
                 initRecyclerView()
-                userInfo()
+                userInfo(profileid!!)
                 user()
                 uploadProfileImage()
+            } else {
+                val uid = arguments?.getString("destinationUid")
+                userInfo(uid!!)
+                initRecyclerView()
             }
         } else {
+            Log.d("SUCCESS", "onCreateView profile id: $profileid")
             initRecyclerView()
-            userInfo()
+            userInfo(profileid!!)
             user()
             uploadProfileImage()    // 이미지 업로드
         }
@@ -130,9 +140,13 @@ class ProfileFragment : Fragment() {
         private var postDto = arrayListOf<PostDto>()
         init {
             val fireStore = FirebaseFirestore.getInstance()
+            var uid = arguments?.getString("destinationUid")
+            if (uid == null) {
+                uid = auth.uid
+            }
             fireStore.collection("posts").get().addOnSuccessListener { result ->
                 for (snapshot in result) {
-                    if (snapshot["uid"].toString() == auth.uid) {
+                    if (snapshot["uid"].toString() == uid) {
                         postDto.add(snapshot.toObject(PostDto::class.java))
                     }
                 }
@@ -167,7 +181,7 @@ class ProfileFragment : Fragment() {
 
     val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private fun requestFollow() {
-        val tsDocFollowing = fireStore.collection("posts").document(currentUserUid)
+        val tsDocFollowing = fireStore.collection("posts").document(currentUserUid!!)
         fireStore.runTransaction { transaction ->
             var followDto: FollowDto? = transaction.get(tsDocFollowing).toObject(FollowDto::class.java)
             if (followDto == null) {
@@ -196,7 +210,7 @@ class ProfileFragment : Fragment() {
             if (followDto == null) {
                 followDto = FollowDto()
                 followDto!!.followerCount = 1
-                followDto!!.followers[currentUserUid] = true
+                followDto!!.followers[currentUserUid!!] = true
 
                 transaction.set(tsDocFollower, followDto!!)
                 return@runTransaction
@@ -207,7 +221,7 @@ class ProfileFragment : Fragment() {
                 followDto!!.followers.remove(currentUserUid)
             } else {    // 안한 경우
                 followDto!!.followerCount += 1
-                followDto!!.followers[currentUserUid] = true
+                followDto!!.followers[currentUserUid!!] = true
             }
             transaction.set(tsDocFollower, followDto!!)
             return@runTransaction
@@ -246,8 +260,8 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun userInfo() {
-        val reference = FirebaseDatabase.getInstance().getReference("Users").child(profileid!!)
+    private fun userInfo(uid: String) {
+        val reference = FirebaseDatabase.getInstance().getReference("Users").child(uid)
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (context == null) {
