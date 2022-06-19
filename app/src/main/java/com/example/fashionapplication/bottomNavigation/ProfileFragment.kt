@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
+import com.bumptech.glide.request.RequestOptions
 import com.example.fashionapplication.R
 import com.example.fashionapplication.data.FollowDto
 import com.example.fashionapplication.data.PostDto
@@ -56,6 +57,7 @@ class ProfileFragment : Fragment() {
         if (currentUserUid == null) {
             currentUserUid = auth.uid.toString()
         }
+        getProfileImage(currentUserUid)
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
@@ -68,10 +70,12 @@ class ProfileFragment : Fragment() {
                 userInfo(profileid!!)
                 user()
                 uploadProfileImage()
+                getProfileImage(profileid)
             } else {
                 val uid = arguments?.getString("destinationUid")
                 userInfo(uid!!)
                 initRecyclerView()
+                getProfileImage(uid)
             }
         } else {
             Log.d("SUCCESS", "onCreateView profile id: $profileid")
@@ -79,6 +83,7 @@ class ProfileFragment : Fragment() {
             userInfo(profileid!!)
             user()
             uploadProfileImage()    // 이미지 업로드
+            getProfileImage(profileid)
         }
 
         // 자신의 프로필인 경우
@@ -181,24 +186,28 @@ class ProfileFragment : Fragment() {
 
     val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private fun requestFollow() {
-        val tsDocFollowing = fireStore.collection("posts").document(currentUserUid!!)
+        val tsDocFollowing = fireStore.collection("follow").document(currentUserUid!!)
         fireStore.runTransaction { transaction ->
             var followDto: FollowDto? = transaction.get(tsDocFollowing).toObject(FollowDto::class.java)
+
             if (followDto == null) {
                 followDto = FollowDto()
                 followDto.followingCount = 1
                 followDto.followers[auth.uid!!] = true
 
                 transaction.set(tsDocFollowing, followDto)
+                binding.followerCount.text = followDto.followingCount.toString()
                 return@runTransaction
             }
 
             if (followDto.followings.containsKey(auth.uid)) {   // follow 한 상태
                 followDto.followingCount -= 1
                 followDto.followers.remove(auth.uid)
+                binding.followerCount.text = followDto.followingCount.toString()
             } else {    // 안한 상태
                 followDto.followingCount += 1
                 followDto.followers[auth.uid!!] = true
+                binding.followerCount.text = followDto.followingCount.toString()
             }
             transaction.set(tsDocFollowing, followDto)
             return@runTransaction
@@ -340,8 +349,25 @@ class ProfileFragment : Fragment() {
         val imageFileName = "${auth.uid}.png"
         val storageRef = FirebaseStorage.getInstance().reference.child("profileImage").child(imageFileName)
 
-        storageRef.putFile(image!!).addOnSuccessListener {
-            Toast.makeText(context, "사진이 업로드됨", Toast.LENGTH_SHORT).show()
+        storageRef.putFile(image!!).continueWithTask { 
+            return@continueWithTask storageRef.downloadUrl
+        }.addOnSuccessListener {
+            val map = HashMap<String, Any>()
+            map["image"] = it.toString()
+            FirebaseFirestore.getInstance().collection("profileImages").document(auth.uid!!).set(map)
+        }
+    }
+
+    private fun getProfileImage(uid: String?) {
+        fireStore.collection("profileImages").document(uid!!).addSnapshotListener { value, error ->
+            if (value == null) return@addSnapshotListener
+            if (value.data != null) {
+                val url = value.data!!["image"]
+                Glide.with(activity!!)
+                    .load(url)
+                    .apply(RequestOptions().circleCrop())
+                    .into(binding.mainImg)
+            }
         }
     }
 }
