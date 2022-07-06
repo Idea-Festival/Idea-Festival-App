@@ -1,6 +1,7 @@
 package com.example.fashionapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -11,7 +12,7 @@ import com.example.fashionapplication.bottomNavigation.SearchFragment
 import com.example.fashionapplication.databinding.ActivityMainPageBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 
 class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -65,15 +66,14 @@ class MainPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
     }
 
     private fun user() {
-        val reference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(auth.uid.toString()).child("imageurl")
-        reference.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(String::class.java)
-                Glide.with(this@MainPageActivity)
-                    .load(user)
-                    .into(binding.profile)
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
+        val fireStore: FirebaseStorage = FirebaseStorage.getInstance("gs://pestival-d14d7.appspot.com/")
+        val file = fireStore.reference.child("profileImage/${intent.getStringExtra("userId")}.png")
+        file.downloadUrl.addOnSuccessListener {
+            Glide.with(this)
+                .load(it)
+                .into(binding.profile)
+        }.addOnFailureListener {
+            Log.e("FAIL", "user fail: ${it.printStackTrace()}", it.cause)
+        }
     }
 }

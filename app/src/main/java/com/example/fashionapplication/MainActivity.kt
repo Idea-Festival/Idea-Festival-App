@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onComplete(p0: Task<AuthResult>) {
                         if (p0.isSuccessful) {
                             Toast.makeText(this@MainActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
+                            Log.d("성공", "onComplete: 로그인 성공")
                             val intent = Intent(this@MainActivity, MainPageActivity::class.java)
                                 .putExtra("userId", auth.uid)
                             startActivity(intent)
