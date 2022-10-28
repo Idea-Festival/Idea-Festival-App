@@ -9,7 +9,6 @@ import com.example.fashionapplication.databinding.ActivitySigupBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class FindPasswordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySigupBinding
